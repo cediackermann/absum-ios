@@ -1,0 +1,438 @@
+rules_version = '2';
+
+// Absum – Firestore security rules
+// The schema and the reasoning behind these rules are documented in backend-schema.md.
+//
+// Ground rules:
+// - Roles live only in /memberships, never on the account.
+// - Permissions are checked by name (can('event.create', ...)), mapped to roles in rolePerms().
+// - clubId is denormalized onto teams, memberships, invites and events. Wherever a client
+//   supplies it, the rules verify it against the team document.
+// - Rules are not filters: every query must include the fields the read rule checks.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ───────────────────────── Helpers ─────────────────────────
+
+    function signedIn() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+
+    function teamMembershipPath(teamId, uid) {
+      return /databases/$(database)/documents/memberships/$('t_' + teamId + '_' + uid);
+    }
+    function clubMembershipPath(clubId, uid) {
+      return /databases/$(database)/documents/memberships/$('c_' + clubId + '_' + uid);
+    }
+
+    function isActiveTeamMemberUid(teamId, uid) {
+      return exists(teamMembershipPath(teamId, uid))
+        && get(teamMembershipPath(teamId, uid)).data.status == 'active';
+    }
+    function isActiveTeamMember(teamId) {
+      return signedIn() && isActiveTeamMemberUid(teamId, me());
+    }
+    function isClubAdmin(clubId) {
+      return signedIn()
+        && exists(clubMembershipPath(clubId, me()))
+        && get(clubMembershipPath(clubId, me())).data.status == 'active'
+        && get(clubMembershipPath(clubId, me())).data.roleId == 'admin';
+    }
+
+    // Permission matrix. Club admins have every permission in all teams of their club.
+    // Custom roles later: replace this map with a lookup of a role document.
+    function rolePerms() {
+      return {
+        'coach': [
+          'event.create', 'event.edit', 'response.editOthers', 'attendance.edit',
+          'reasons.read', 'members.manage', 'invites.manage', 'team.settings', 'memberPrivate.read'
+        ],
+        'assistantCoach': [
+          'event.create', 'event.edit', 'response.editOthers', 'attendance.edit',
+          'reasons.read', 'invites.manage', 'memberPrivate.read'
+        ],
+        'player': []
+      };
+    }
+    function can(perm, teamId, clubId) {
+      return isClubAdmin(clubId)
+        || (isActiveTeamMember(teamId)
+            && perm in rolePerms()[get(teamMembershipPath(teamId, me())).data.roleId]);
+    }
+    function canSee(teamId, clubId) {
+      return isActiveTeamMember(teamId) || isClubAdmin(clubId);
+    }
+
+    function teamDoc(teamId) { return get(/databases/$(database)/documents/teams/$(teamId)).data; }
+    function teamBelongsToClub(teamId, clubId) {
+      return exists(/databases/$(database)/documents/teams/$(teamId))
+        && teamDoc(teamId).clubId == clubId;
+    }
+
+    function isName(s, max) { return s is string && s.size() > 0 && s.size() <= max; }
+    function optString(d, key, max) {
+      return !(key in d) || d[key] == null || (d[key] is string && d[key].size() <= max);
+    }
+    function stamped(d) { return d.updatedAt == request.time && d.updatedBy == me(); }
+    function unchanged(keys) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(keys);
+    }
+    function onlyChanged(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
+    }
+
+    // ───────────────────────── Users ─────────────────────────
+    // Private profile. Teammates see names via the membership documents.
+
+    match /users/{uid} {
+      function validUser(d) {
+        return d.keys().hasOnly(['displayName', 'photoURL', 'locale', 'notificationPrefs', 'createdAt', 'updatedAt'])
+          && isName(d.displayName, 60)
+          && optString(d, 'photoURL', 500)
+          && d.locale in ['de-CH', 'en']
+          && (!('notificationPrefs' in d) || d.notificationPrefs is map)
+          && d.updatedAt == request.time;
+      }
+      allow read, delete: if signedIn() && me() == uid;
+      allow create, update: if signedIn() && me() == uid && validUser(request.resource.data);
+
+      match /devices/{deviceId} {
+        allow read, delete: if signedIn() && me() == uid;
+        allow create, update: if signedIn() && me() == uid
+          && request.resource.data.keys().hasOnly(['fcmToken', 'platform', 'locale', 'updatedAt'])
+          && request.resource.data.fcmToken is string
+          && request.resource.data.platform in ['ios']
+          && request.resource.data.updatedAt == request.time;
+      }
+    }
+
+    // ───────────────────────── Clubs ─────────────────────────
+
+    match /clubs/{clubId} {
+      allow get: if signedIn();
+      // Created in one batch together with the creator's admin membership.
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['name', 'createdBy', 'createdAt'])
+        && isName(request.resource.data.name, 80)
+        && request.resource.data.createdBy == me()
+        && request.resource.data.createdAt == request.time
+        && existsAfter(clubMembershipPath(clubId, me()));
+      allow update: if isClubAdmin(clubId) && onlyChanged(['name'])
+        && isName(request.resource.data.name, 80);
+      // Deleting a club cascades through teams, events and memberships: Cloud Function only.
+      allow delete: if false;
+    }
+
+    // ───────────────────────── Teams ─────────────────────────
+
+    match /teams/{teamId} {
+      function validTeam(d) {
+        return d.keys().hasOnly(['clubId', 'name', 'sport', 'timezone', 'settings', 'archived', 'createdAt'])
+          && isName(d.name, 80)
+          && optString(d, 'sport', 40)
+          && d.timezone is string
+          && d.archived is bool
+          && d.settings.keys().hasOnly(['reasonVisibility', 'defaultReminderOffsetMin', 'defaultLockOffsetMin'])
+          && d.settings.reasonVisibility in ['staff', 'team']
+          && d.settings.defaultReminderOffsetMin is int
+          && d.settings.defaultReminderOffsetMin >= 0
+          && d.settings.defaultReminderOffsetMin <= 20160
+          && (d.settings.defaultLockOffsetMin == null
+              || (d.settings.defaultLockOffsetMin is int && d.settings.defaultLockOffsetMin >= 0));
+      }
+
+      allow get: if signedIn();
+      allow list: if isClubAdmin(resource.data.clubId);
+      allow create: if isClubAdmin(request.resource.data.clubId)
+        && validTeam(request.resource.data)
+        && request.resource.data.createdAt == request.time;
+      allow update: if can('team.settings', teamId, resource.data.clubId)
+        && unchanged(['clubId', 'createdAt'])
+        && validTeam(request.resource.data);
+      allow delete: if false; // archive instead
+
+      // Optional per-person data for exports (e.g. NDS person ID). Field set is up to you.
+      match /memberPrivate/{uid} {
+        allow read: if (signedIn() && me() == uid && isActiveTeamMember(teamId))
+          || can('memberPrivate.read', teamId, teamDoc(teamId).clubId);
+        allow create, update: if ((signedIn() && me() == uid && isActiveTeamMember(teamId))
+            || can('members.manage', teamId, teamDoc(teamId).clubId))
+          && request.resource.data.keys().hasOnly(['ndsPersonId', 'fields', 'updatedAt', 'updatedBy'])
+          && optString(request.resource.data, 'ndsPersonId', 40)
+          && stamped(request.resource.data);
+        allow delete: if can('members.manage', teamId, teamDoc(teamId).clubId);
+      }
+    }
+
+    // ───────────────────────── Memberships ─────────────────────────
+    // ID: t_{teamId}_{uid} for team roles, c_{clubId}_{uid} for club roles.
+    // Never deleted: leaving or removal sets the status, so history stays intact.
+
+    match /memberships/{mid} {
+      function validMembership(d) {
+        return d.keys().hasOnly([
+            'uid', 'scope', 'clubId', 'teamId', 'roleId', 'status', 'displayName', 'photoURL',
+            'accountDeleted', 'inviteCode', 'joinedAt', 'leftAt', 'updatedAt', 'updatedBy'
+          ])
+          && d.uid is string
+          && d.clubId is string
+          && isName(d.displayName, 60)
+          && optString(d, 'photoURL', 500)
+          && d.status in ['active', 'pending', 'left', 'removed']
+          && d.updatedAt == request.time
+          && (
+            (d.scope == 'team' && d.teamId is string
+              && mid == 't_' + d.teamId + '_' + d.uid
+              && d.roleId in ['coach', 'assistantCoach', 'player'])
+            || (d.scope == 'club' && d.teamId == null
+              && mid == 'c_' + d.clubId + '_' + d.uid
+              && d.roleId in ['admin'])
+          );
+      }
+
+      // Creator of a new club becomes its admin (same batch as the club document).
+      function isClubBootstrap(d) {
+        return d.scope == 'club' && d.uid == me() && d.roleId == 'admin' && d.status == 'active'
+          && !exists(/databases/$(database)/documents/clubs/$(d.clubId))
+          && getAfter(/databases/$(database)/documents/clubs/$(d.clubId)).data.createdBy == me();
+      }
+
+      // Joining a team with an invite code. Always as player; pending if approval is required.
+      function isInviteJoin(d) {
+        let invPath = /databases/$(database)/documents/invites/$(d.inviteCode);
+        let inv = get(invPath).data;
+        return d.scope == 'team' && d.uid == me() && d.roleId == 'player'
+          && d.inviteCode is string && exists(invPath)
+          && inv.teamId == d.teamId && inv.clubId == d.clubId
+          && inv.revoked == false && request.time < inv.expiresAt
+          && ((inv.requiresApproval && d.status == 'pending')
+              || (!inv.requiresApproval && d.status == 'active'));
+      }
+
+      // A coach or club admin adds someone directly (e.g. the admin adds themself as coach).
+      function isAddedByManager(d) {
+        return d.updatedBy == me() && (
+          (d.scope == 'team' && teamBelongsToClub(d.teamId, d.clubId)
+            && can('members.manage', d.teamId, d.clubId))
+          || (d.scope == 'club' && isClubAdmin(d.clubId))
+        );
+      }
+
+      allow read: if signedIn() && (
+        resource.data.uid == me()
+        || isActiveTeamMember(resource.data.teamId)
+        || isClubAdmin(resource.data.clubId)
+      );
+
+      allow create: if signedIn()
+        && validMembership(request.resource.data)
+        && request.resource.data.updatedBy == me()
+        && (isClubBootstrap(request.resource.data)
+            || isInviteJoin(request.resource.data)
+            || isAddedByManager(request.resource.data));
+
+      allow update: if signedIn()
+        && validMembership(request.resource.data)
+        && request.resource.data.updatedBy == me()
+        && unchanged(['uid', 'scope', 'clubId', 'teamId', 'joinedAt'])
+        && (
+          // 1. Own name/photo sync, and anonymization on account deletion.
+          (resource.data.uid == me()
+            && onlyChanged(['displayName', 'photoURL', 'accountDeleted', 'updatedAt', 'updatedBy']))
+          // 2. Leave. Admins can't leave on their own: another admin must demote them first,
+          //    which also guarantees a club never loses its last admin.
+          || (resource.data.uid == me()
+            && resource.data.status in ['active', 'pending']
+            && resource.data.roleId != 'admin'
+            && request.resource.data.status == 'left'
+            && request.resource.data.leftAt == request.time
+            && onlyChanged(['status', 'leftAt', 'updatedAt', 'updatedBy']))
+          // 3. Rejoin after leaving, with a valid invite. Removed members need a manager.
+          || (resource.data.uid == me()
+            && resource.data.status == 'left'
+            && isInviteJoin(request.resource.data)
+            && onlyChanged(['status', 'roleId', 'inviteCode', 'leftAt', 'updatedAt', 'updatedBy']))
+          // 4. Managers approve, remove and change roles. Nobody changes their own role here.
+          || (resource.data.uid != me()
+            && onlyChanged(['roleId', 'status', 'leftAt', 'updatedAt', 'updatedBy'])
+            && ((resource.data.scope == 'team'
+                  && can('members.manage', resource.data.teamId, resource.data.clubId))
+                || (resource.data.scope == 'club' && isClubAdmin(resource.data.clubId))))
+        );
+
+      allow delete: if false;
+    }
+
+    // ───────────────────────── Invites ─────────────────────────
+    // The document ID is the code. Knowing the code is what grants access, so no listing.
+
+    match /invites/{code} {
+      allow get: if signedIn();
+      allow list: if can('invites.manage', resource.data.teamId, resource.data.clubId);
+      allow create: if signedIn()
+        && code.size() >= 8 && code.size() <= 16
+        && request.resource.data.keys().hasOnly(['teamId', 'clubId', 'requiresApproval', 'revoked', 'expiresAt', 'createdBy', 'createdAt'])
+        && teamBelongsToClub(request.resource.data.teamId, request.resource.data.clubId)
+        && can('invites.manage', request.resource.data.teamId, request.resource.data.clubId)
+        && request.resource.data.requiresApproval is bool
+        && request.resource.data.revoked == false
+        && request.resource.data.expiresAt > request.time
+        && request.resource.data.expiresAt < request.time + duration.value(90, 'd')
+        && request.resource.data.createdBy == me()
+        && request.resource.data.createdAt == request.time;
+      allow update: if can('invites.manage', resource.data.teamId, resource.data.clubId)
+        && onlyChanged(['revoked', 'expiresAt', 'requiresApproval'])
+        && request.resource.data.revoked is bool
+        && request.resource.data.requiresApproval is bool
+        && request.resource.data.expiresAt < request.time + duration.value(90, 'd');
+      allow delete: if can('invites.manage', resource.data.teamId, resource.data.clubId);
+    }
+
+    // ───────────────────────── Event series ─────────────────────────
+    // Template for recurring events. Instances are materialized as normal events.
+
+    match /eventSeries/{seriesId} {
+      allow read: if canSee(resource.data.teamId, resource.data.clubId);
+      allow create: if teamBelongsToClub(request.resource.data.teamId, request.resource.data.clubId)
+        && can('event.create', request.resource.data.teamId, request.resource.data.clubId)
+        && request.resource.data.template is map
+        && request.resource.data.recurrence is map
+        && request.resource.data.createdBy == me();
+      allow update: if can('event.edit', resource.data.teamId, resource.data.clubId)
+        && unchanged(['teamId', 'clubId', 'createdBy']);
+      allow delete: if can('event.edit', resource.data.teamId, resource.data.clubId);
+    }
+
+    // ───────────────────────── Events ─────────────────────────
+
+    match /events/{eventId} {
+      function validEvent(d) {
+        return d.keys().hasOnly([
+            'teamId', 'clubId', 'type', 'title', 'startAt', 'endAt', 'meetAt', 'location', 'notes',
+            'status', 'reminderAt', 'lockAt', 'remindedAt', 'seriesId', 'isException',
+            'createdBy', 'createdAt', 'updatedAt', 'updatedBy'
+          ])
+          && d.type in ['training', 'game', 'tournament', 'other']
+          && isName(d.title, 80)
+          && d.startAt is timestamp && d.endAt is timestamp && d.endAt > d.startAt
+          && (d.get('meetAt', null) == null || (d.meetAt is timestamp && d.meetAt <= d.startAt))
+          && (d.get('reminderAt', null) == null || (d.reminderAt is timestamp && d.reminderAt < d.startAt))
+          && (d.get('lockAt', null) == null || (d.lockAt is timestamp && d.lockAt <= d.endAt))
+          && (d.get('location', null) == null || d.location is map)
+          && optString(d, 'notes', 1000)
+          && d.status in ['scheduled', 'cancelled']
+          && stamped(d);
+      }
+
+      allow read: if canSee(resource.data.teamId, resource.data.clubId);
+
+      allow create: if signedIn()
+        && teamBelongsToClub(request.resource.data.teamId, request.resource.data.clubId)
+        && can('event.create', request.resource.data.teamId, request.resource.data.clubId)
+        && validEvent(request.resource.data)
+        && request.resource.data.get('remindedAt', null) == null
+        && request.resource.data.createdBy == me()
+        && request.resource.data.createdAt == request.time;
+
+      allow update: if can('event.edit', resource.data.teamId, resource.data.clubId)
+        && unchanged(['teamId', 'clubId', 'createdBy', 'createdAt'])
+        && validEvent(request.resource.data)
+        // Clients may only reset remindedAt (after moving the reminder); the function sets it.
+        && (request.resource.data.get('remindedAt', null) == null
+            || request.resource.data.get('remindedAt', null) == resource.data.get('remindedAt', null));
+
+      allow delete: if can('event.edit', resource.data.teamId, resource.data.clubId);
+
+      function ev() { return get(/databases/$(database)/documents/events/$(eventId)).data; }
+      function isOpenForPlayers() {
+        return ev().status == 'scheduled'
+          && (ev().get('lockAt', null) == null || request.time < ev().lockAt);
+      }
+      function matchesEvent(d, uid) {
+        return d.uid == uid && d.teamId == ev().teamId && d.clubId == ev().clubId
+          && d.eventStartAt == ev().startAt;
+      }
+
+      // ── Responses: one document per member, ID = uid ──
+      match /responses/{uid} {
+        function validResponse(d) {
+          return d.keys().hasOnly(['uid', 'teamId', 'clubId', 'eventStartAt', 'status', 'setByStaff', 'clientTime', 'updatedAt', 'updatedBy'])
+            && matchesEvent(d, uid)
+            && d.status in ['yes', 'no', 'unsure']
+            && d.setByStaff is bool
+            && d.clientTime is timestamp
+            && d.clientTime <= request.time + duration.value(2, 'm')
+            && stamped(d);
+        }
+        // Own answer. A coach's override wins, unless the player answered after it.
+        function isOwnWrite(d) {
+          return me() == uid && isActiveTeamMember(ev().teamId) && isOpenForPlayers()
+            && d.setByStaff == false
+            && (resource == null
+                || resource.data.setByStaff == false
+                || d.clientTime > resource.data.updatedAt);
+        }
+        // On behalf of a member, ignoring the lock.
+        function isStaffWrite(d) {
+          return can('response.editOthers', ev().teamId, ev().clubId)
+            && isActiveTeamMemberUid(ev().teamId, uid)
+            && d.setByStaff == (uid != me());
+        }
+
+        allow read: if canSee(ev().teamId, ev().clubId);
+        allow create, update: if signedIn() && validResponse(request.resource.data)
+          && (isOwnWrite(request.resource.data) || isStaffWrite(request.resource.data));
+        allow delete: if signedIn() && (
+          (me() == uid && isOpenForPlayers() && resource.data.setByStaff == false)
+          || can('response.editOthers', ev().teamId, ev().clubId));
+      }
+
+      // ── Reasons: separate from the response so visibility can differ ──
+      match /reasons/{uid} {
+        function validReason(d) {
+          return d.keys().hasOnly(['uid', 'teamId', 'clubId', 'eventStartAt', 'text', 'updatedAt', 'updatedBy'])
+            && matchesEvent(d, uid)
+            && d.text is string && d.text.size() <= 200
+            && stamped(d);
+        }
+        allow read: if signedIn() && (
+          me() == uid
+          || can('reasons.read', ev().teamId, ev().clubId)
+          || (isActiveTeamMember(ev().teamId)
+              && teamDoc(ev().teamId).settings.reasonVisibility == 'team'));
+        allow create, update: if signedIn() && validReason(request.resource.data) && (
+          (me() == uid && isActiveTeamMember(ev().teamId) && isOpenForPlayers())
+          || can('response.editOthers', ev().teamId, ev().clubId));
+        // Players may always delete their own reason (also needed for account deletion).
+        allow delete: if signedIn() && (me() == uid
+          || can('response.editOthers', ev().teamId, ev().clubId));
+      }
+
+      // ── Actual attendance, recorded by staff ──
+      match /attendance/{uid} {
+        allow read: if signedIn() && (me() == uid
+          || can('attendance.edit', ev().teamId, ev().clubId));
+        allow create, update: if signedIn()
+          && can('attendance.edit', ev().teamId, ev().clubId)
+          && isActiveTeamMemberUid(ev().teamId, uid)
+          && request.resource.data.keys().hasOnly(['uid', 'teamId', 'clubId', 'eventStartAt', 'present', 'recordedBy', 'recordedAt'])
+          && matchesEvent(request.resource.data, uid)
+          && request.resource.data.present is bool
+          && request.resource.data.recordedBy == me()
+          && request.resource.data.recordedAt == request.time;
+        allow delete: if can('attendance.edit', ev().teamId, ev().clubId);
+      }
+    }
+
+    // ───────────────────────── Collection-group queries ─────────────────────────
+    // Export: collectionGroup('attendance').where('teamId','==',t).where('clubId','==',c)
+    //         .where('eventStartAt','>=',from).where('eventStartAt','<',to)
+    match /{path=**}/attendance/{uid} {
+      allow read: if can('attendance.edit', resource.data.teamId, resource.data.clubId);
+    }
+    // Account deletion: collectionGroup('reasons').where('uid','==',me) to find own reasons.
+    match /{path=**}/reasons/{uid} {
+      allow read: if signedIn() && resource.data.uid == me();
+    }
+  }
+}
