@@ -10,7 +10,6 @@
 		EA357DD13083A2B8007855EA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EA357DD03083A2B8007855EA /* FirebaseAuth */; };
 		EA357DD33083A2BE007855EA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EA357DD23083A2BE007855EA /* FirebaseFirestore */; };
 		EA357DD53083A2C5007855EA /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = EA357DD43083A2C5007855EA /* FirebaseMessaging */; };
-		EA357DD73083A8A7007855EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA357DD63083A8A7007855EA /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,7 +30,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		EA357DD63083A8A7007855EA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EAE9C946307D66D900766938 /* absum-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "absum-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE9C953307D66DA00766938 /* absum-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "absum-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE9C95D307D66DA00766938 /* absum-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "absum-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,7 +89,6 @@
 				EAE9C956307D66DA00766938 /* absum-iosTests */,
 				EAE9C960307D66DA00766938 /* absum-iosUITests */,
 				EA357DCF3083A2B8007855EA /* Frameworks */,
-				EA357DD63083A8A7007855EA /* GoogleService-Info.plist */,
 				EAE9C947307D66D900766938 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -226,7 +223,6 @@
 		EAE9C944307D66D900766938 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
-				EA357DD73083A8A7007855EA /* GoogleService-Info.plist in Resources */,
 			);
 		};
 		EAE9C951307D66DA00766938 /* Resources */ = {
@@ -333,6 +329,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -390,6 +387,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
