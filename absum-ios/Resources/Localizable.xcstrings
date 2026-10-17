@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "de",
   "strings" : {
+    "Abbrechen" : {
+
+    },
     "Abmelden" : {
 
     },
@@ -23,6 +26,9 @@
     "Bereits ein Konto?" : {
 
     },
+    "Dein Konto und deine Daten werden gelöscht. Das kann nicht rückgängig gemacht werden." : {
+
+    },
     "E-Mail" : {
       "localizations" : {
         "en" : {
@@ -43,6 +49,9 @@
         }
       }
     },
+    "Konto endgültig löschen?" : {
+
+    },
     "Konto erstellen" : {
       "localizations" : {
         "en" : {
@@ -52,6 +61,9 @@
           }
         }
       }
+    },
+    "Konto löschen" : {
+
     },
     "Noch kein Konto?" : {
       "localizations" : {
@@ -102,6 +114,9 @@
           }
         }
       }
+    },
+    "Profil" : {
+
     },
     "Termine und Anwesenheit für dein Team." : {
 
