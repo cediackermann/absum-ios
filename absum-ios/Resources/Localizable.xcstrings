@@ -2,16 +2,44 @@
   "sourceLanguage" : "de",
   "strings" : {
     "Abbrechen" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
     },
     "Abmelden" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out"
+          }
+        }
+      }
     },
     "Abmelden fehlgeschlagen." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out failed."
+          }
+        }
+      }
     },
     "Absum" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Absum"
+          }
+        }
+      }
     },
     "Anmelden" : {
       "localizations" : {
@@ -24,10 +52,24 @@
       }
     },
     "Bereits ein Konto?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Already have an Account?"
+          }
+        }
+      }
     },
     "Dein Konto und deine Daten werden gelöscht. Das kann nicht rückgängig gemacht werden." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your account and your data will be deleted. This cannot be undone."
+          }
+        }
+      }
     },
     "E-Mail" : {
       "localizations" : {
@@ -50,7 +92,14 @@
       }
     },
     "Konto endgültig löschen?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete account permanently?"
+          }
+        }
+      }
     },
     "Konto erstellen" : {
       "localizations" : {
@@ -63,7 +112,14 @@
       }
     },
     "Konto löschen" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete account"
+          }
+        }
+      }
     },
     "Noch kein Konto?" : {
       "localizations" : {
@@ -116,10 +172,24 @@
       }
     },
     "Profil" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
     },
     "Termine und Anwesenheit für dein Team." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appointments and attendance for your team."
+          }
+        }
+      }
     }
   },
   "version" : "1.3"
