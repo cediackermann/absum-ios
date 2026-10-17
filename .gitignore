@@ -141,3 +141,9 @@ Pods/
 /fastlane/fastlane/Appfile
 /Gemfile.lock
 /enterprise/register/Gemfile.lock
+
+# Firebase emulator
+firebase/emulator-data/
+*-debug.log
+firebase-export-*/
+.firebase/
