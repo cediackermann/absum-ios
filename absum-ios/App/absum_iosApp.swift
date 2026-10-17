@@ -7,24 +7,25 @@
 
 import SwiftUI
 import FirebaseCore
+import FirebaseAuth
+import FirebaseFirestore
 
-class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-    return true
-  }
-
-}
+final class AppDelegate: NSObject, UIApplicationDelegate {}   // for push later; no configure() here
 
 @main
 struct absum_iosApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var viewModel: AuthenticationViewModel
+
+    init() {
+        FirebaseApp.configure()
+        _viewModel = State(initialValue: AuthenticationViewModel())
+    }
+
     var body: some Scene {
-        // Register app delegate for Firebase setup
-        @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-        
         WindowGroup {
-            ContentView()
+            RootView()
+                .environment(viewModel)
         }
     }
 }

@@ -1,7 +1,111 @@
 {
   "sourceLanguage" : "de",
   "strings" : {
+    "Abmelden" : {
 
+    },
+    "Abmelden fehlgeschlagen." : {
+
+    },
+    "Absum" : {
+
+    },
+    "Anmelden" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in"
+          }
+        }
+      }
+    },
+    "Bereits ein Konto?" : {
+
+    },
+    "E-Mail" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "Erstelle ein Konto, um deinem Team beizutreten." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an account to join a team"
+          }
+        }
+      }
+    },
+    "Konto erstellen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an account"
+          }
+        }
+      }
+    },
+    "Noch kein Konto?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No account?"
+          }
+        }
+      }
+    },
+    "Passwort" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
+          }
+        }
+      }
+    },
+    "Passwort anzeigen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show passsword"
+          }
+        }
+      }
+    },
+    "Passwort verbergen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide password"
+          }
+        }
+      }
+    },
+    "Passwort vergessen?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forgot password?"
+          }
+        }
+      }
+    },
+    "Termine und Anwesenheit für dein Team." : {
+
+    }
   },
   "version" : "1.3"
 }
