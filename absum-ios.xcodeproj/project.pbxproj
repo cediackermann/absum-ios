@@ -1,0 +1,566 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		EAE9C954307D66DA00766938 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EAE9C93E307D66D900766938 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAE9C945307D66D900766938;
+			remoteInfo = "absum-ios";
+		};
+		EAE9C95E307D66DA00766938 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EAE9C93E307D66D900766938 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAE9C945307D66D900766938;
+			remoteInfo = "absum-ios";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		EAA474D430837A0F001FCC69 /* absum-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "absum-ios.xcodeproj"; sourceTree = "<group>"; };
+		EAE9C946307D66D900766938 /* absum-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "absum-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAE9C953307D66DA00766938 /* absum-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "absum-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAE9C95D307D66DA00766938 /* absum-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "absum-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		EAE9C948307D66D900766938 /* absum-ios */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "absum-ios";
+			sourceTree = "<group>";
+		};
+		EAE9C956307D66DA00766938 /* absum-iosTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "absum-iosTests";
+			sourceTree = "<group>";
+		};
+		EAE9C960307D66DA00766938 /* absum-iosUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "absum-iosUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EAE9C943307D66D900766938 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		EAE9C950307D66DA00766938 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		EAE9C95A307D66DA00766938 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EAA474D730837A0F001FCC69 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EAE9C93D307D66D900766938 = {
+			isa = PBXGroup;
+			children = (
+				EAE9C948307D66D900766938 /* absum-ios */,
+				EAE9C956307D66DA00766938 /* absum-iosTests */,
+				EAE9C960307D66DA00766938 /* absum-iosUITests */,
+				EAE9C947307D66D900766938 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EAE9C947307D66D900766938 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EAE9C946307D66D900766938 /* absum-ios.app */,
+				EAE9C953307D66DA00766938 /* absum-iosTests.xctest */,
+				EAE9C95D307D66DA00766938 /* absum-iosUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EAE9C945307D66D900766938 /* absum-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAE9C965307D66DA00766938 /* Build configuration list for PBXNativeTarget "absum-ios" */;
+			buildPhases = (
+				EAE9C942307D66D900766938 /* Sources */,
+				EAE9C943307D66D900766938 /* Frameworks */,
+				EAE9C944307D66D900766938 /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				EAE9C948307D66D900766938 /* absum-ios */,
+			);
+			name = "absum-ios";
+			productName = "absum-ios";
+			productReference = EAE9C946307D66D900766938 /* absum-ios.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EAE9C952307D66DA00766938 /* absum-iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAE9C968307D66DA00766938 /* Build configuration list for PBXNativeTarget "absum-iosTests" */;
+			buildPhases = (
+				EAE9C94F307D66DA00766938 /* Sources */,
+				EAE9C950307D66DA00766938 /* Frameworks */,
+				EAE9C951307D66DA00766938 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EAE9C955307D66DA00766938 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EAE9C956307D66DA00766938 /* absum-iosTests */,
+			);
+			name = "absum-iosTests";
+			productName = "absum-iosTests";
+			productReference = EAE9C953307D66DA00766938 /* absum-iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EAE9C95C307D66DA00766938 /* absum-iosUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAE9C96B307D66DA00766938 /* Build configuration list for PBXNativeTarget "absum-iosUITests" */;
+			buildPhases = (
+				EAE9C959307D66DA00766938 /* Sources */,
+				EAE9C95A307D66DA00766938 /* Frameworks */,
+				EAE9C95B307D66DA00766938 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EAE9C95F307D66DA00766938 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EAE9C960307D66DA00766938 /* absum-iosUITests */,
+			);
+			name = "absum-iosUITests";
+			productName = "absum-iosUITests";
+			productReference = EAE9C95D307D66DA00766938 /* absum-iosUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EAE9C93E307D66D900766938 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					EAE9C945307D66D900766938 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					EAE9C952307D66DA00766938 = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = EAE9C945307D66D900766938;
+					};
+					EAE9C95C307D66DA00766938 = {
+						CreatedOnToolsVersion = 27.0;
+						TestTargetID = EAE9C945307D66D900766938;
+					};
+				};
+			};
+			buildConfigurationList = EAE9C941307D66D900766938 /* Build configuration list for PBXProject "absum-ios" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EAE9C93D307D66D900766938;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EAE9C947307D66D900766938 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = EAA474D730837A0F001FCC69 /* Products */;
+					ProjectRef = EAA474D430837A0F001FCC69 /* absum-ios.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				EAE9C945307D66D900766938 /* absum-ios */,
+				EAE9C952307D66DA00766938 /* absum-iosTests */,
+				EAE9C95C307D66DA00766938 /* absum-iosUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EAE9C944307D66D900766938 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		EAE9C951307D66DA00766938 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		EAE9C95B307D66DA00766938 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EAE9C942307D66D900766938 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		EAE9C94F307D66DA00766938 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		EAE9C959307D66DA00766938 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EAE9C955307D66DA00766938 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAE9C945307D66D900766938 /* absum-ios */;
+			targetProxy = EAE9C954307D66DA00766938 /* PBXContainerItemProxy */;
+		};
+		EAE9C95F307D66DA00766938 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAE9C945307D66D900766938 /* absum-ios */;
+			targetProxy = EAE9C95E307D66DA00766938 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		EAE9C963307D66DA00766938 /* Debug configuration for PBXProject "absum-ios" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 85QLX8TWWU;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EAE9C964307D66DA00766938 /* Release configuration for PBXProject "absum-ios" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 85QLX8TWWU;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EAE9C966307D66DA00766938 /* Debug configuration for PBXNativeTarget "absum-ios" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 85QLX8TWWU;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cediackermann.absum-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EAE9C967307D66DA00766938 /* Release configuration for PBXNativeTarget "absum-ios" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 85QLX8TWWU;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cediackermann.absum-ios";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EAE9C969307D66DA00766938 /* Debug configuration for PBXNativeTarget "absum-iosTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 85QLX8TWWU;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cediackermann.absum-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/absum-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/absum-ios";
+			};
+			name = Debug;
+		};
+		EAE9C96A307D66DA00766938 /* Release configuration for PBXNativeTarget "absum-iosTests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 85QLX8TWWU;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cediackermann.absum-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/absum-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/absum-ios";
+			};
+			name = Release;
+		};
+		EAE9C96C307D66DA00766938 /* Debug configuration for PBXNativeTarget "absum-iosUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 85QLX8TWWU;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cediackermann.absum-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "absum-ios";
+			};
+			name = Debug;
+		};
+		EAE9C96D307D66DA00766938 /* Release configuration for PBXNativeTarget "absum-iosUITests" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 85QLX8TWWU;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "cediackermann.absum-iosUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "absum-ios";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EAE9C941307D66D900766938 /* Build configuration list for PBXProject "absum-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAE9C963307D66DA00766938 /* Debug configuration for PBXProject "absum-ios" */,
+				EAE9C964307D66DA00766938 /* Release configuration for PBXProject "absum-ios" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		EAE9C965307D66DA00766938 /* Build configuration list for PBXNativeTarget "absum-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAE9C966307D66DA00766938 /* Debug configuration for PBXNativeTarget "absum-ios" */,
+				EAE9C967307D66DA00766938 /* Release configuration for PBXNativeTarget "absum-ios" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		EAE9C968307D66DA00766938 /* Build configuration list for PBXNativeTarget "absum-iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAE9C969307D66DA00766938 /* Debug configuration for PBXNativeTarget "absum-iosTests" */,
+				EAE9C96A307D66DA00766938 /* Release configuration for PBXNativeTarget "absum-iosTests" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		EAE9C96B307D66DA00766938 /* Build configuration list for PBXNativeTarget "absum-iosUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAE9C96C307D66DA00766938 /* Debug configuration for PBXNativeTarget "absum-iosUITests" */,
+				EAE9C96D307D66DA00766938 /* Release configuration for PBXNativeTarget "absum-iosUITests" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EAE9C93E307D66D900766938 /* Project object */;
+	validationLevel = 1;
+}
