@@ -137,8 +137,8 @@ service cloud.firestore {
           && d.settings.defaultReminderOffsetMin is int
           && d.settings.defaultReminderOffsetMin >= 0
           && d.settings.defaultReminderOffsetMin <= 20160
-          && (d.settings.defaultLockOffsetMin == null
-              || (d.settings.defaultLockOffsetMin is int && d.settings.defaultLockOffsetMin >= 0));
+          && (d.settings.get('defaultLockOffsetMin', null) == null
+            || (d.settings.defaultLockOffsetMin is int && d.settings.defaultLockOffsetMin >= 0));
       }
 
       allow get: if signedIn();
@@ -184,7 +184,7 @@ service cloud.firestore {
             (d.scope == 'team' && d.teamId is string
               && mid == 't_' + d.teamId + '_' + d.uid
               && d.roleId in ['coach', 'assistantCoach', 'player'])
-            || (d.scope == 'club' && d.teamId == null
+            || (d.scope == 'club' && d.get('teamId', null) == null
               && mid == 'c_' + d.clubId + '_' + d.uid
               && d.roleId in ['admin'])
           );
