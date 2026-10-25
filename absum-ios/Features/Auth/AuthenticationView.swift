@@ -12,7 +12,7 @@ struct AuthenticationView: View {
     @Environment(AuthenticationViewModel.self) private var viewModel
 
     private enum Field {
-        case email, password, confirmPassword
+        case firstName, lastName, email, password
     }
     @FocusState private var focusedField: Field?
     
@@ -39,6 +39,19 @@ struct AuthenticationView: View {
             .listRowBackground(Color.clear)
             
             Section {
+                if viewModel.flow == .signUp {
+                    TextField("Vorname", text: $viewModel.firstName)
+                        .focused($focusedField, equals: .firstName)
+                        .textContentType(.name)
+                        .submitLabel(.next)
+                        .onSubmit { focusedField = .lastName }
+                    
+                    TextField("Nachname", text: $viewModel.lastName)
+                        .focused($focusedField, equals: .lastName)
+                        .textContentType(.name)
+                        .submitLabel(.next)
+                        .onSubmit { focusedField = .email }
+                }
                 TextField("E-Mail", text: $viewModel.email)
                     .focused($focusedField, equals: .email)
                     .textContentType(.emailAddress)
@@ -50,7 +63,7 @@ struct AuthenticationView: View {
                 
                 PasswordField(title: "Passwort", text: $viewModel.password)
                     .focused($focusedField, equals: .password)
-                    .onSubmit { focusedField = .confirmPassword }
+                    .onSubmit { onSubmit() }
             } footer: {
                 HStack {
                     Spacer()
@@ -101,3 +114,7 @@ struct AuthenticationView: View {
     }
 }
 
+#Preview {
+    RootView()
+        .environment(AuthenticationViewModel())
+}

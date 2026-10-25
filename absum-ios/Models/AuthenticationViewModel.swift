@@ -26,19 +26,23 @@ enum AuthenticationFlow {
 final class AuthenticationViewModel {
     var email: String = ""
     var password: String = ""
+    var firstName: String = ""
+    var lastName: String = ""
+    var displayName: String {
+        return firstName + " " + lastName
+    }
     
     var flow: AuthenticationFlow = .login
     
     var authenticationState: AuthenticationState = .unauthenticated
     var user: User?
     var errorMessage: String = ""
-    var displayName: String = ""
     var isValid: Bool {
         switch flow {
         case .login:
             return !email.isEmpty && !password.isEmpty
         case .signUp:
-            return !displayName.isEmpty && !email.isEmpty && password.count >= 10
+            return !firstName.isEmpty && !lastName.isEmpty && !email.isEmpty && password.count >= 10
         }
     }
 
@@ -53,7 +57,6 @@ final class AuthenticationViewModel {
             authStateHandle = Auth.auth().addStateDidChangeListener{ auth, user in
                 self.user = user
                 self.authenticationState = user == nil ? .unauthenticated : .authenticated
-                self.displayName = user?.email ?? "unknown"
             }
         }
     }

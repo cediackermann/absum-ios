@@ -121,6 +121,9 @@
         }
       }
     },
+    "Nachname" : {
+
+    },
     "Noch kein Konto?" : {
       "localizations" : {
         "en" : {
@@ -190,6 +193,9 @@
           }
         }
       }
+    },
+    "Vorname" : {
+
     }
   },
   "version" : "1.3"
