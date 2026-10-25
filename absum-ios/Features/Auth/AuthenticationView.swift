@@ -10,6 +10,7 @@ import Combine
 
 struct AuthenticationView: View {
     @Environment(AuthenticationViewModel.self) private var viewModel
+    @Environment(AuthService.self) private var auth
 
     private enum Field {
         case firstName, lastName, email, password
@@ -17,14 +18,8 @@ struct AuthenticationView: View {
     @FocusState private var focusedField: Field?
     
     private func onSubmit() {
-        Task {
-            switch viewModel.flow {
-            case .login:
-                await viewModel.signInWithEmailPassword()
-            case .signUp:
-                await viewModel.signUpWithEmailPassword()
-            }
-        }
+        focusedField = nil
+        Task { await viewModel.submit(using: auth) }
     }
 
     var body: some View {
@@ -77,7 +72,7 @@ struct AuthenticationView: View {
                     onSubmit()
                 } label: {
                     Group {
-                        if viewModel.authenticationState == .authenticating {
+                        if auth.state == .checking {
                             ProgressView()
                         } else {
                             Text(viewModel.flow == .login ? "Anmelden" : "Konto erstellen")
@@ -88,7 +83,7 @@ struct AuthenticationView: View {
                 .buttonStyle(.glassProminent)
                 .controlSize(.large)
                 .disabled(
-                    !viewModel.isValid || viewModel.authenticationState == .authenticating
+                    !viewModel.isValid || auth.state == .checking
                 )
             } footer: {
                 HStack {

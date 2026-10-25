@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @Environment(AuthenticationViewModel.self) private var viewModel
+    @Environment(AuthService.self) private var auth
     @State private var showDeleteConfirmation = false
 
     var body: some View {
         Form {
             Section {
                 VStack(spacing: 4) {
-                    Text(viewModel.displayName)
+                    Text(auth.displayName)
                         .font(.title2.bold())
-                    Text(viewModel.email)
-                        .foregroundStyle(.secondary)
+//                    Text(auth.profile.)
+//                        .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity)
             }
@@ -26,7 +26,10 @@ struct ProfileView: View {
 
             Section {
                 Button("Abmelden") {
-                    viewModel.signOut()
+                    do {
+                        try auth.signOut()
+                        } catch {
+                    }
                 }
                 .frame(maxWidth: .infinity)
 
@@ -41,7 +44,6 @@ struct ProfileView: View {
                             isPresented: $showDeleteConfirmation,
                             titleVisibility: .visible) {
             Button("Konto löschen", role: .destructive) {
-                Task { await viewModel.deleteAccount() }
             }
             Button("Abbrechen", role: .cancel) { }
         } message: {
@@ -52,7 +54,5 @@ struct ProfileView: View {
 
 #Preview {
     NavigationStack {
-        ProfileView()
-            .environment(AuthenticationViewModel())
     }
 }

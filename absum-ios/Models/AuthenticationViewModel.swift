@@ -6,15 +6,7 @@
 //
 
 import Foundation
-import Combine
-import FirebaseAuth
 import Observation
-
-enum AuthenticationState {
-  case unauthenticated
-  case authenticating
-  case authenticated
-}
 
 enum AuthenticationFlow {
   case login
@@ -28,15 +20,16 @@ final class AuthenticationViewModel {
     var password: String = ""
     var firstName: String = ""
     var lastName: String = ""
+    
+    private(set) var isWorking = false
+    var errorMessage: String?
+    
     var displayName: String {
-        return firstName + " " + lastName
+        "\(firstName.trimmed) \(lastName.trimmed)"
     }
     
     var flow: AuthenticationFlow = .login
     
-    var authenticationState: AuthenticationState = .unauthenticated
-    var user: User?
-    var errorMessage: String = ""
     var isValid: Bool {
         switch flow {
         case .login:
@@ -46,90 +39,48 @@ final class AuthenticationViewModel {
         }
     }
 
-    init() {
-        registerAuthStateHandler()
-    }
-    
-    private var authStateHandle: AuthStateDidChangeListenerHandle?
-    
-    func registerAuthStateHandler(){
-        if authStateHandle == nil {
-            authStateHandle = Auth.auth().addStateDidChangeListener{ auth, user in
-                self.user = user
-                self.authenticationState = user == nil ? .unauthenticated : .authenticated
-            }
-        }
-    }
-
     func switchFlow() {
         flow = flow == .login ? .signUp : .login
+        password = ""
         errorMessage = ""
       }
-
-      func reset() {
-        flow = .login
+    
+    func submit(using auth: AuthService) async {
+        guard isValid, !isWorking else { return }
+        isWorking = true
+        errorMessage = nil
+        defer { isWorking = false }
+        
+        do {
+            switch flow {
+            case .login:
+                try await auth
+                    .signIn(email: email.trimmed, password: password)
+            case .signUp:
+                try await auth
+                    .signUp(
+                        name: displayName,
+                        email: email.trimmed,
+                        password: password
+                    )
+            }
+            reset()
+        } catch {
+            password = "" 
+            errorMessage = error.localizedDescription
+        }
+        
+    }
+    
+    private func reset() {
+        firstName = ""
+        lastName = ""
         email = ""
         password = ""
-      }
+        errorMessage = nil
+    }
 }
 
-// MARK: - Email and Password Authentication
-
-extension AuthenticationViewModel {
-  func signInWithEmailPassword() async -> Bool {
-    authenticationState = .authenticating
-      do {
-          let authResult = try await Auth.auth().signIn(
-            withEmail: email,
-            password: password
-          )
-          user = authResult.user
-          print("User \(authResult.user.uid) signed in")
-          return true
-      }
-      catch {
-          print(error)
-          errorMessage = error.localizedDescription
-          authenticationState = .unauthenticated
-          return false
-      }
-  }
-
-  func signUpWithEmailPassword() async -> Bool {
-      authenticationState = .authenticating
-        do {
-            let authResult = try await Auth.auth().createUser(
-              withEmail: email,
-              password: password
-            )
-            user = authResult.user
-            print("User \(authResult.user.uid) signed in")
-            return true
-        }
-        catch {
-            print(error)
-            errorMessage = error.localizedDescription
-            authenticationState = .unauthenticated
-            return false
-        }
-  }
-
-  func signOut() {
-      do {
-          try Auth.auth().signOut()
-      } catch {
-          errorMessage = String(localized: "Abmelden fehlgeschlagen.")
-      }
-  }
-
-  func deleteAccount() async -> Bool {
-      do {
-          try await user?.delete()
-          return true
-      }
-      catch {
-          errorMessage = error.localizedDescription
-          return false
-      }
-  }
+private extension String {
+    var trimmed: String { trimmingCharacters(in: .whitespacesAndNewlines) }
 }

@@ -4,18 +4,24 @@
 //
 //  Created by cediackermann on 17.10.2026.
 //
+
 import Foundation
 import FirebaseFirestore
 
-struct AppUser: Codable, Identifiable{
+struct AppUser: Codable, Identifiable {
     @DocumentID var id: String?
     var displayName: String
     var photoURL: String?
-    var locale: String = "de"
+    var locale: AppLocale
     @ServerTimestamp var createdAt: Date?
     @ServerTimestamp var updatedAt: Date?
-    
-    static var currentLocale: String {
-        Locale.current.language.languageCode == "en" ? "en" : "de"
+}
+
+enum AppLocale: String, Codable, CaseIterable {
+    case germanSwitzerland = "de-CH"
+    case english = "en"
+
+    static var current: AppLocale {
+        Locale.current.language.languageCode == "en" ? .english : .germanSwitzerland
     }
 }

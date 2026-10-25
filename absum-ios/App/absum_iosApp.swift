@@ -16,16 +16,19 @@ final class AppDelegate: NSObject, UIApplicationDelegate {}   // for push later;
 struct absum_iosApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var viewModel: AuthenticationViewModel
+    @State private var auth: AuthService
 
     init() {
         FirebaseApp.configure()
         _viewModel = State(initialValue: AuthenticationViewModel())
+        _auth = State(initialValue: AuthService())
     }
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(viewModel)
+                .environment(auth)
         }
     }
 }

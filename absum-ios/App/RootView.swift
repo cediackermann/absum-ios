@@ -8,21 +8,25 @@
 import SwiftUI
 
 struct RootView: View {
-    @Environment(AuthenticationViewModel.self) private var viewModel
-    
+    @Environment(AuthService.self) private var auth
+    @Environment(\.scenePhase) private var scenePhase
+
     var body: some View {
-        switch viewModel.authenticationState {
-        case .authenticated:
-            MainView()
-        case .authenticating:
-            ProgressView()
-        case .unauthenticated:
-            AuthenticationView()
+        Group {
+            switch auth.state {
+            case .checking:
+                ProgressView()
+            case .unauthenticated:
+                AuthenticationView()
+            case .authenticated:
+                MainView()
+            }
+        }
+        .animation(.default, value: auth.state)
+        .onChange(of: scenePhase, initial: true) { _, phase in
+            if phase == .active {
+                Task { await auth.validateSession() }
+            }
         }
     }
-}
-
-#Preview {
-    RootView()
-        .environment(AuthenticationViewModel())
 }
