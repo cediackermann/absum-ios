@@ -104,20 +104,34 @@ final class ClubService {
         let db = Firestore.firestore()
         
         for id in missingTeams {
+            let teamRef = db.collection("teams").document(id)
+            
+            if let cached = try? await teamRef.getDocument(source: .cache).data(
+                as: Team.self
+            ) {
+                teams[id] = cached
+            }
+            
             do {
-                let team = try await db.collection("teams").document(id).getDocument(as: Team.self)
+                let fresh = try await teamRef.getDocument(source: .server).data(as: Team.self)
                 guard self.uid == uid else { return }
-                teams[id] = team
+                teams[id] = fresh
             } catch {
                 report(error)
             }
         }
         
         for id in missingClubs {
+            let clubRef = db.collection("clubs").document(id)
+            if let cached = try? await clubRef.getDocument(source: .cache).data(
+                as: Club.self
+            ) {
+                clubs[id] = cached
+            }
             do {
-                let club = try await db.collection("clubs").document(id).getDocument(as: Club.self)
+                let fresh = try await clubRef.getDocument(source: .server).data(as: Club.self)
                 guard self.uid == uid else { return }
-                clubs[id] = club
+                clubs[id] = fresh
             } catch {
                 report(error)
             }
