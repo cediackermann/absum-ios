@@ -31,17 +31,6 @@
         }
       }
     },
-    "Abmelden fehlgeschlagen." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sign out failed."
-          }
-        }
-      }
-    },
     "Absum" : {
       "localizations" : {
         "en" : {
@@ -85,6 +74,9 @@
 
     },
     "Club Name" : {
+
+    },
+    "Clubs" : {
 
     },
     "Co-Trainer" : {
@@ -152,9 +144,6 @@
           }
         }
       }
-    },
-    "Meine Clubs" : {
-
     },
     "Meine Teams" : {
 

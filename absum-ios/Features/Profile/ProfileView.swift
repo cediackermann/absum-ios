@@ -40,27 +40,7 @@ struct ProfileView: View {
                 Text("Meine Teams")
             }
             
-            Section {
-                VStack(alignment: .leading) {
-                    ForEach(
-                        clubService.clubs.sorted(by: {$0.key < $1.key }),
-                        id: \.key
-                    ) {
-                        key, club in
-                        Text("\(key): \(club.name)")
-                    }
-                }
-                Button {
-                    showClubCreationSheet.toggle()
-                } label: {
-                    Label("Club erstellen", systemImage: "plus")
-                }
-                .sheet(isPresented: $showClubCreationSheet) {
-                    CreateClubView().presentationDetents([.large])
-                }
-            } header: {
-                Text("Meine Clubs")
-            }
+            ClubsSection()
 
             Section {
                 Button("Abmelden") {
