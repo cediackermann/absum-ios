@@ -5,62 +5,99 @@
 //  Created by cediackermann on 26.10.2026.
 //
 
-import Foundation
 import SwiftUI
 
 struct CreateTeamView: View {
-    @Environment(\.dismiss) var dismiss
-    @Environment(ClubService.self) var clubService
-    
+    @Environment(\.dismiss) private var dismiss
+    @Environment(ClubService.self) private var clubService
+    @Environment(AuthService.self) private var auth
+
     @State private var name = ""
+    @State private var clubId: String?
+    @State private var sport = ""
+    @State private var addMeAsCoach = true
+
     @State private var isWorking = false
     @State private var errorMessage: String?
-    
+
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Team Name", text: $name)
-                    .textContentType(.organizationName)
-            }
-            .navigationTitle("Neues team")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark")
-                                .accessibilityLabel("Cancel")
+                Section {
+                    TextField("Name", text: $name, prompt: Text("z. B. U20 Männer"))
+                    TextField("Sportart", text: $sport, prompt: Text("Optional"))
+                }
+
+                Section {
+                    Picker("Club", selection: $clubId) {
+                        ForEach(adminClubs) { club in
+                            Text(club.name).tag(club.id)
                         }
                     }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        Task {
-                            await create()
-                        }
-                    } label: {
-                        if isWorking {
-                            ProgressView()
-                        } else {
-                            Image(systemName: "checkmark")
-                                .accessibilityLabel("Confirm")
-                        }
+                    Toggle("Ich bin Trainer dieses Teams", isOn: $addMeAsCoach)
+                } footer: {
+                    if let errorMessage {
+                        Text(errorMessage).foregroundStyle(.red)
                     }
                 }
             }
+            .navigationTitle("Neues Team")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .close) { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    if isWorking {
+                        ProgressView()
+                    } else {
+                        Button(role: .confirm) {
+                            Task { await create() }
+                        }
+                        .disabled(!canCreate)
+                    }
+                }
+            }
+            .onAppear {
+                clubId = clubId ?? adminClubs.first?.id
+            }
         }
+        .interactiveDismissDisabled(isWorking)
     }
-    
+
     // MARK: - Private
-    
+
+    private var adminClubs: [Club] {
+        clubService.memberships
+            .filter { $0.scope == .club && $0.roleId == .admin }
+            .compactMap { clubService.clubs[$0.clubId] }
+            .sorted { $0.name < $1.name }
+    }
+
+    private var canCreate: Bool {
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && clubId != nil
+            && auth.profile != nil
+            && !isWorking
+    }
+
     private func create() async {
+        guard let clubId else { return }
         isWorking = true
         errorMessage = nil
         defer { isWorking = false }
 
         do {
+            try await clubService.createTeam(
+                name: name,
+                sport: sport,
+                in: clubId,
+                addMeAsCoach: addMeAsCoach,
+                displayName: auth.profile?.displayName ?? "",
+                photoURL: auth.profile?.photoURL
+            )
             dismiss()
         } catch {
-            errorMessage = String(localized: "Das Team konnte nicht erstellt werden.")
+            errorMessage = ClubService.message(for: error)
         }
     }
 }

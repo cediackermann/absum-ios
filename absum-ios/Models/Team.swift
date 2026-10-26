@@ -13,7 +13,7 @@ struct Team: nonisolated Codable, Identifiable {
     var clubId: String
     var name: String
     var sport: String?
-    var timezone: TimeZone
+    var timezone: String
     var archived: Bool
     var settings: TeamSettings
     @ServerTimestamp var createdAt: Date?

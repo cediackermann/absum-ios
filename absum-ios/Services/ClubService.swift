@@ -9,6 +9,11 @@ import Foundation
 import FirebaseFirestore
 import Observation
 
+enum ClubServiceError: Error {
+    case notSignedIn
+    case invalidName
+}
+
 @MainActor
 @Observable
 final class ClubService {
@@ -84,6 +89,55 @@ final class ClubService {
         try await batch.commit()
     }
     
+    @discardableResult
+    func createTeam(
+        name: String,
+        sport: String?,
+        in clubId: String,
+        addMeAsCoach: Bool,
+        displayName: String,
+        photoURL: String?
+    ) async throws -> String {
+        guard let uid else { throw ClubServiceError.notSignedIn }
+
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty, name.count <= 80 else { throw ClubServiceError.invalidName }
+
+        let sport = sport?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanSport = (sport?.isEmpty ?? true) ? nil : sport
+
+        let db = Firestore.firestore()
+        let teamRef = db.collection("teams").document()
+        let membershipRef = db.collection("memberships")
+            .document(Membership.teamDocumentID(teamId: teamRef.documentID, uid: uid))
+
+        let team = Team(
+            id: nil,
+            clubId: clubId,
+            name: name,
+            sport: cleanSport,
+            timezone: TimeZone.current.identifier,
+            archived: false,
+            settings: TeamSettings(),
+            createdAt: nil
+        )
+        
+        try await teamRef.setData(Firestore.Encoder().encode(team))
+
+        if addMeAsCoach {
+            let membership = Membership.coach(
+                uid: uid,
+                clubId: clubId,
+                teamId: teamRef.documentID,
+                displayName: displayName,
+                photoURL: photoURL
+            )
+            try await membershipRef.setData(Firestore.Encoder().encode(membership))
+        }
+
+        return teamRef.documentID
+    }
+    
     //MARK: - Private
     
     private func report(_ error: Error) {
@@ -139,5 +193,32 @@ final class ClubService {
         
         errorMessage = nil
         self.isLoading = false
+    }
+}
+
+extension ClubService {
+    nonisolated static func message(for error: Error) -> String {
+        if let error = error as? ClubServiceError {
+            switch error {
+            case .notSignedIn:
+                return String(localized: "Du bist nicht angemeldet.")
+            case .invalidName:
+                return String(localized: "Der Name muss zwischen 1 und 80 Zeichen lang sein.")
+            }
+        }
+
+        let nsError = error as NSError
+        if nsError.domain == FirestoreErrorDomain,
+           let code = FirestoreErrorCode.Code(rawValue: nsError.code) {
+            switch code {
+            case .permissionDenied:
+                return String(localized: "Dazu hast du keine Berechtigung.")
+            case .unavailable:
+                return String(localized: "Keine Verbindung. Bitte versuche es später nochmals.")
+            default:
+                break
+            }
+        }
+        return String(localized: "Etwas ist schiefgelaufen. Bitte versuche es nochmals.")
     }
 }

@@ -57,10 +57,10 @@
     "Cancel" : {
 
     },
-    "Club erstellen" : {
+    "Club" : {
 
     },
-    "Club konnte nicht erstellt werden." : {
+    "Club erstellen" : {
 
     },
     "Club Name" : {
@@ -75,6 +75,9 @@
     "Confirm" : {
 
     },
+    "Dazu hast du keine Berechtigung." : {
+
+    },
     "Dein Konto und deine Daten werden gelöscht. Das kann nicht rückgängig gemacht werden." : {
       "localizations" : {
         "en" : {
@@ -84,6 +87,12 @@
           }
         }
       }
+    },
+    "Der Name muss zwischen 1 und 80 Zeichen lang sein." : {
+
+    },
+    "Du bist nicht angemeldet." : {
+
     },
     "E-Mail" : {
       "localizations" : {
@@ -104,6 +113,15 @@
           }
         }
       }
+    },
+    "Etwas ist schiefgelaufen. Bitte versuche es nochmals." : {
+
+    },
+    "Ich bin Trainer dieses Teams" : {
+
+    },
+    "Keine Verbindung. Bitte versuche es später nochmals." : {
+
     },
     "Konto endgültig löschen?" : {
       "localizations" : {
@@ -138,10 +156,13 @@
     "Nachname" : {
 
     },
+    "Name" : {
+
+    },
     "Neuer Club" : {
 
     },
-    "Neues team" : {
+    "Neues Team" : {
 
     },
     "Noch kein Konto?" : {
@@ -153,6 +174,9 @@
           }
         }
       }
+    },
+    "Optional" : {
+
     },
     "Passwort" : {
       "localizations" : {
@@ -207,10 +231,10 @@
     "Spieler" : {
 
     },
-    "Team erstellen" : {
+    "Sportart" : {
 
     },
-    "Team Name" : {
+    "Team erstellen" : {
 
     },
     "Teams konnten nicht geladen werden." : {
@@ -230,6 +254,9 @@
 
     },
     "Vorname" : {
+
+    },
+    "z. B. U20 Männer" : {
 
     }
   },

@@ -65,7 +65,7 @@ struct CreateClubView: View {
             )
             dismiss()
         } catch {
-            errorMessage = String(localized: "Club konnte nicht erstellt werden.")
+            errorMessage = ClubService.message(for: error)
         }
     }
 }
