@@ -25,7 +25,7 @@ struct CreateClubView: View {
             .navigationTitle("Neuer Club")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                        Button {
+                    Button(role: .close) {
                             dismiss()
                         } label: {
                             Image(systemName: "xmark")
@@ -33,7 +33,7 @@ struct CreateClubView: View {
                         }
                     }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button {
+                    Button(role: .confirm) {
                         Task {
                             await create()
                         }
@@ -45,12 +45,17 @@ struct CreateClubView: View {
                                 .accessibilityLabel("Confirm")
                         }
                     }
+                    .disabled(!canCreate)
                 }
             }
         }
     }
     
     // MARK: - Private
+    
+    private var canCreate: Bool {
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
     
     private func create() async {
         isWorking = true

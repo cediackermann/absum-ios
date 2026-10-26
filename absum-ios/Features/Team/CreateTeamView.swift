@@ -86,8 +86,6 @@ struct CreateTeamView: View {
     }
 
     // MARK: - Private
-    
-    
 
     private var adminClubs: [Club] {
         clubService.memberships
