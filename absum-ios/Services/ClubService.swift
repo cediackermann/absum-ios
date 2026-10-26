@@ -61,6 +61,29 @@ final class ClubService {
         uid = nil
     }
     
+    func createClub(name: String, displayName: String, photoURL: String?) async throws {
+        guard let uid else { return }
+        
+        let db = Firestore.firestore()
+        
+        let clubRef = db.collection("clubs").document()
+        let membershipRef = db.collection("memberships")
+                .document(Membership.clubDocumentID(clubId: clubRef.documentID, uid: uid))
+        
+        let club = Club(id: nil, name: name, createdBy: uid)
+        let membership = Membership.clubAdmin(
+            uid: uid,
+            clubId: clubRef.documentID,
+            displayName: displayName,
+            photoURL: photoURL
+        )
+        
+        let batch = db.batch()
+        try batch.setData(from: club, forDocument: clubRef)
+        try batch.setData(from: membership, forDocument: membershipRef)
+        try await batch.commit()
+    }
+    
     //MARK: - Private
     
     private func report(_ error: Error) {

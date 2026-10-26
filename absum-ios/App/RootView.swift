@@ -10,7 +10,7 @@ import SwiftUI
 struct RootView: View {
     @Environment(AuthService.self) private var auth
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(ClubService.self) private var teams
+    @Environment(ClubService.self) private var clubService
 
     var body: some View {
         Group {
@@ -31,9 +31,9 @@ struct RootView: View {
         }
         .task(id: auth.uid) {
             if let uid = auth.uid {
-                teams.start(uid: uid)
+                clubService.start(uid: uid)
             } else {
-                teams.stop()
+                clubService.stop()
             }
         }
     }

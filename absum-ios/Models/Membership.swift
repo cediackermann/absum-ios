@@ -34,3 +34,35 @@ enum MembershipScope: String, Codable {
 enum MembershipStatus: String, Codable {
     case active, pending, left, removed
 }
+
+extension Membership {
+    static func clubDocumentID(clubId: String, uid: String) -> String {
+        "c_\(clubId)_\(uid)"
+    }
+    
+    static func teamDocumentID(teamId: String, uid: String) -> String {
+        "t_\(teamId)_\(uid)"
+    }
+    
+    static func clubAdmin(uid: String, clubId: String,
+                            displayName: String, photoURL: String?) -> Membership {
+          Membership(
+              id: nil,
+              uid: uid,
+              scope: .club,
+              clubId: clubId,
+              teamId: nil,
+              roleId: .admin,
+              status: .active,
+              displayName: displayName,
+              photoURL: photoURL,
+              accountDeleted: nil,
+              inviteCode: nil,
+              joinedAt: nil,
+              leftAt: nil,
+              updatedAt: nil,
+              updatedBy: uid
+          )
+      }
+    
+}

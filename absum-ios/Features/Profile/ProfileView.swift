@@ -9,7 +9,10 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(AuthService.self) private var auth
+    @Environment(ClubService.self) private var clubService
+    
     @State private var showDeleteConfirmation = false
+    @State private var showClubCreationSheet = false
 
     var body: some View {
         Form {
@@ -17,12 +20,47 @@ struct ProfileView: View {
                 VStack(spacing: 4) {
                     Text(auth.displayName)
                         .font(.title2.bold())
-//                    Text(auth.profile.)
-//                        .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity)
             }
             .listRowBackground(Color.clear)
+            
+            Section {
+                VStack(alignment: .leading) {
+                    ForEach(clubService.teams.sorted(by: { $0.key < $1.key }), id: \.key) { key, team in
+                        Text("\(key): \(team.name)")
+                    }
+                }
+                Button {
+                    
+                } label: {
+                    Label("Team erstellen", systemImage: "plus")
+                }
+            } header: {
+                Text("Meine Teams")
+            }
+            
+            Section {
+                VStack(alignment: .leading) {
+                    ForEach(
+                        clubService.clubs.sorted(by: {$0.key < $1.key }),
+                        id: \.key
+                    ) {
+                        key, club in
+                        Text("\(key): \(club.name)")
+                    }
+                }
+                Button {
+                    showClubCreationSheet.toggle()
+                } label: {
+                    Label("Club erstellen", systemImage: "plus")
+                }
+                .sheet(isPresented: $showClubCreationSheet) {
+                    CreateClubView().presentationDetents([.large])
+                }
+            } header: {
+                Text("Meine Clubs")
+            }
 
             Section {
                 Button("Abmelden") {

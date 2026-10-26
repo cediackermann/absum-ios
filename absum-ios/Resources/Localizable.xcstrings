@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "de",
   "strings" : {
+    "%@: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
     "Abbrechen" : {
       "localizations" : {
         "en" : {
@@ -65,7 +75,22 @@
         }
       }
     },
+    "Cancel" : {
+
+    },
+    "Club erstellen" : {
+
+    },
+    "Club konnte nicht erstellt werden." : {
+
+    },
+    "Club Name" : {
+
+    },
     "Co-Trainer" : {
+
+    },
+    "Confirm" : {
 
     },
     "Dein Konto und deine Daten werden gelöscht. Das kann nicht rückgängig gemacht werden." : {
@@ -128,7 +153,16 @@
         }
       }
     },
+    "Meine Clubs" : {
+
+    },
+    "Meine Teams" : {
+
+    },
     "Nachname" : {
+
+    },
+    "Neuer Club" : {
 
     },
     "Noch kein Konto?" : {
@@ -192,6 +226,9 @@
       }
     },
     "Spieler" : {
+
+    },
+    "Team erstellen" : {
 
     },
     "Teams konnten nicht geladen werden." : {
