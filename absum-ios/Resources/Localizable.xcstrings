@@ -1,16 +1,6 @@
 {
   "sourceLanguage" : "de",
   "strings" : {
-    "%@: %@" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@: %2$@"
-          }
-        }
-      }
-    },
     "Abbrechen" : {
       "localizations" : {
         "en" : {
@@ -145,13 +135,13 @@
         }
       }
     },
-    "Meine Teams" : {
-
-    },
     "Nachname" : {
 
     },
     "Neuer Club" : {
+
+    },
+    "Neues team" : {
 
     },
     "Noch kein Konto?" : {
@@ -218,6 +208,9 @@
 
     },
     "Team erstellen" : {
+
+    },
+    "Team Name" : {
 
     },
     "Teams konnten nicht geladen werden." : {

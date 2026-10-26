@@ -25,20 +25,7 @@ struct ProfileView: View {
             }
             .listRowBackground(Color.clear)
             
-            Section {
-                VStack(alignment: .leading) {
-                    ForEach(clubService.teams.sorted(by: { $0.key < $1.key }), id: \.key) { key, team in
-                        Text("\(key): \(team.name)")
-                    }
-                }
-                Button {
-                    
-                } label: {
-                    Label("Team erstellen", systemImage: "plus")
-                }
-            } header: {
-                Text("Meine Teams")
-            }
+            TeamsSection()
             
             ClubsSection()
 
