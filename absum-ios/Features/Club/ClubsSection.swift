@@ -5,7 +5,6 @@
 //  Created by cediackermann on 26.10.2026.
 //
 
-import Foundation
 import SwiftUI
 
 struct ClubsSection: View {
@@ -15,21 +14,35 @@ struct ClubsSection: View {
     var body: some View {
         Section("Clubs") {
             ForEach(sortedClubs) { club in
-                IconRow(title: club.name, subtitle: "Admin",
-                        systemImage: "", color: .blue)
+                IconRow(
+                    title: club.name,
+                    subtitle: "Admin",
+                    systemImage: "building.2",
+                    color: .blue
+                )
             }
+
             Button {
                 showClubCreationSheet = true
             } label: {
                 Label("Club erstellen", systemImage: "plus")
             }
-        }
-        .sheet(isPresented: $showClubCreationSheet) {
-            CreateClubView()
+            .sheet(isPresented: $showClubCreationSheet) {
+                CreateClubView()
+            }
         }
     }
 
     private var sortedClubs: [Club] {
         clubService.clubs.values.sorted { $0.name < $1.name }
     }
+}
+
+#Preview {
+    NavigationStack {
+        Form {
+            ClubsSection()
+        }
+    }
+    .environment(ClubService())
 }
