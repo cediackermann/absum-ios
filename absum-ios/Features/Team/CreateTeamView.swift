@@ -18,7 +18,12 @@ struct CreateTeamView: View {
     @State private var addMeAsCoach = true
 
     @State private var isWorking = false
+    @State private var showClubCreationSheet = false
     @State private var errorMessage: String?
+    
+    private var selectedClubName: String? {
+        adminClubs.first { $0.id == clubId }?.name
+    }
 
     var body: some View {
         NavigationStack {
@@ -29,11 +34,24 @@ struct CreateTeamView: View {
                 }
 
                 Section {
-                    Picker("Club", selection: $clubId) {
-                        ForEach(adminClubs) { club in
-                            Text(club.name).tag(club.id)
+                    LabeledContent("Club") {
+                        Menu {
+                            Picker("Club", selection: $clubId) {
+                                ForEach(adminClubs) { club in
+                                    Text(club.name).tag(club.id)
+                                }
+                            }
+
+                            Divider()
+
+                            Button("Club erstellen", systemImage: "plus") {
+                                showClubCreationSheet = true
+                            }
+                        } label: {
+                            Text(selectedClubName ?? "Auswählen")
                         }
                     }
+
                     Toggle("Ich bin Trainer dieses Teams", isOn: $addMeAsCoach)
                 } footer: {
                     if let errorMessage {
@@ -60,11 +78,16 @@ struct CreateTeamView: View {
             .onAppear {
                 clubId = clubId ?? adminClubs.first?.id
             }
+            .sheet(isPresented: $showClubCreationSheet) {
+                CreateClubView()
+            }
         }
         .interactiveDismissDisabled(isWorking)
     }
 
     // MARK: - Private
+    
+    
 
     private var adminClubs: [Club] {
         clubService.memberships
