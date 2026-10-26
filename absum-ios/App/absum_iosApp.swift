@@ -17,11 +17,13 @@ struct absum_iosApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var viewModel: AuthenticationViewModel
     @State private var auth: AuthService
+    @State private var teams: TeamService
 
     init() {
         FirebaseApp.configure()
         _viewModel = State(initialValue: AuthenticationViewModel())
         _auth = State(initialValue: AuthService())
+        _teams = State(initialValue: TeamService())
     }
 
     var body: some Scene {
@@ -29,6 +31,7 @@ struct absum_iosApp: App {
             RootView()
                 .environment(viewModel)
                 .environment(auth)
+                .environment(teams)
         }
     }
 }

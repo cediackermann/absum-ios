@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct Club: Codable, Identifiable {
+struct Club: nonisolated Codable, Identifiable {
     @DocumentID var id: String?
     var name: String
     var createdBy: String

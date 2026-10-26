@@ -42,6 +42,9 @@
         }
       }
     },
+    "Admin" : {
+
+    },
     "Anmelden" : {
       "localizations" : {
         "en" : {
@@ -61,6 +64,9 @@
           }
         }
       }
+    },
+    "Co-Trainer" : {
+
     },
     "Dein Konto und deine Daten werden gelöscht. Das kann nicht rückgängig gemacht werden." : {
       "localizations" : {
@@ -185,6 +191,12 @@
         }
       }
     },
+    "Spieler" : {
+
+    },
+    "Teams konnten nicht geladen werden." : {
+
+    },
     "Termine und Anwesenheit für dein Team." : {
       "localizations" : {
         "en" : {
@@ -194,6 +206,9 @@
           }
         }
       }
+    },
+    "Trainer" : {
+
     },
     "Vorname" : {
 
