@@ -13,22 +13,26 @@ struct ClubsSection: View {
 
     var body: some View {
         Section("Clubs") {
-            ForEach(sortedClubs) { club in
-                IconRow(
-                    title: club.name,
-                    subtitle: "Admin",
-                    systemImage: "building.2",
-                    color: .blue
-                )
-            }
-
-            Button {
-                showClubCreationSheet = true
-            } label: {
-                Label("Club erstellen", systemImage: "plus")
-            }
-            .sheet(isPresented: $showClubCreationSheet) {
-                CreateClubView()
+            if clubService.isLoading && clubService.clubs.isEmpty {
+                ProgressView()
+            } else{
+                ForEach(sortedClubs) { club in
+                    IconRow(
+                        title: club.name,
+                        subtitle: "Admin",
+                        systemImage: "building.2",
+                        color: .blue
+                    )
+                }
+                
+                Button {
+                    showClubCreationSheet = true
+                } label: {
+                    Label("Club erstellen", systemImage: "plus")
+                }
+                .sheet(isPresented: $showClubCreationSheet) {
+                    CreateClubView()
+                }
             }
         }
     }
