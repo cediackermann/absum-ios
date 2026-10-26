@@ -17,13 +17,13 @@ struct absum_iosApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var viewModel: AuthenticationViewModel
     @State private var auth: AuthService
-    @State private var teams: TeamService
+    @State private var teams: ClubService
 
     init() {
         FirebaseApp.configure()
         _viewModel = State(initialValue: AuthenticationViewModel())
         _auth = State(initialValue: AuthService())
-        _teams = State(initialValue: TeamService())
+        _teams = State(initialValue: ClubService())
     }
 
     var body: some Scene {

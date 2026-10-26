@@ -10,7 +10,7 @@ import SwiftUI
 struct RootView: View {
     @Environment(AuthService.self) private var auth
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(TeamService.self) private var teams
+    @Environment(ClubService.self) private var teams
 
     var body: some View {
         Group {

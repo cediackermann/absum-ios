@@ -1,5 +1,5 @@
 //
-//  TeamService.swift
+//  ClubService.swift
 //  absum-ios
 //
 //  Created by cediackermann on 25.10.2026.
@@ -11,7 +11,7 @@ import Observation
 
 @MainActor
 @Observable
-final class TeamService {
+final class ClubService {
     private(set) var memberships: [Membership] = []
     private(set) var teams: [String: Team] = [:]
     private(set) var clubs: [String: Club] = [:]
@@ -65,7 +65,7 @@ final class TeamService {
     
     private func report(_ error: Error) {
         #if DEBUG
-        print("TeamService:", error)
+        print("ClubService:", error)
         #endif
         errorMessage = String(localized: "Teams konnten nicht geladen werden.")
     }
