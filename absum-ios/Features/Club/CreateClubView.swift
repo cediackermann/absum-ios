@@ -29,7 +29,7 @@ struct CreateClubView: View {
                             dismiss()
                         } label: {
                             Image(systemName: "xmark")
-                                .accessibilityLabel("Cancel")
+                                .accessibilityLabel("Abbrechen")
                         }
                     }
                 ToolbarItem(placement: .confirmationAction) {
@@ -42,7 +42,7 @@ struct CreateClubView: View {
                             ProgressView()
                         } else {
                             Image(systemName: "checkmark")
-                                .accessibilityLabel("Confirm")
+                                .accessibilityLabel("Bestätigen")
                         }
                     }
                     .disabled(!canCreate)

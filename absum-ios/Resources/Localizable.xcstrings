@@ -32,7 +32,14 @@
       }
     },
     "Admin" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Admin"
+          }
+        }
+      }
     },
     "Anmelden" : {
       "localizations" : {
@@ -54,29 +61,75 @@
         }
       }
     },
-    "Cancel" : {
-
+    "Bestätigen" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
+          }
+        }
+      }
     },
     "Club" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Club"
+          }
+        }
+      }
     },
     "Club erstellen" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create club"
+          }
+        }
+      }
     },
     "Club Name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cub name"
+          }
+        }
+      }
     },
     "Clubs" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clubs"
+          }
+        }
+      }
     },
     "Co-Trainer" : {
-
-    },
-    "Confirm" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Co-Coach"
+          }
+        }
+      }
     },
     "Dazu hast du keine Berechtigung." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don’t have permission for that"
+          }
+        }
+      }
     },
     "Dein Konto und deine Daten werden gelöscht. Das kann nicht rückgängig gemacht werden." : {
       "localizations" : {
@@ -89,10 +142,24 @@
       }
     },
     "Der Name muss zwischen 1 und 80 Zeichen lang sein." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The name needs to be in 1-80 Characters long."
+          }
+        }
+      }
     },
     "Du bist nicht angemeldet." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are signed out."
+          }
+        }
+      }
     },
     "E-Mail" : {
       "localizations" : {
@@ -115,13 +182,34 @@
       }
     },
     "Etwas ist schiefgelaufen. Bitte versuche es nochmals." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something went wrong, please try again."
+          }
+        }
+      }
     },
     "Ich bin Trainer dieses Teams" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I am coach of this team"
+          }
+        }
+      }
     },
     "Keine Verbindung. Bitte versuche es später nochmals." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No connection. Please try again later."
+          }
+        }
+      }
     },
     "Konto endgültig löschen?" : {
       "localizations" : {
@@ -154,19 +242,54 @@
       }
     },
     "Mitglieder" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Members"
+          }
+        }
+      }
     },
     "Nachname" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last name"
+          }
+        }
+      }
     },
     "Name" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "Neuer Club" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New club"
+          }
+        }
+      }
     },
     "Neues Team" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New team"
+          }
+        }
+      }
     },
     "Noch kein Konto?" : {
       "localizations" : {
@@ -179,7 +302,14 @@
       }
     },
     "Optional" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optional"
+          }
+        }
+      }
     },
     "Passwort" : {
       "localizations" : {
@@ -232,19 +362,54 @@
       }
     },
     "Spieler" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Player"
+          }
+        }
+      }
     },
     "Sportart" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sport"
+          }
+        }
+      }
     },
     "Team erstellen" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create team"
+          }
+        }
+      }
     },
     "Team nicht gefunden" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Team not found"
+          }
+        }
+      }
     },
     "Teams konnten nicht geladen werden." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teams couldn’t be loaded."
+          }
+        }
+      }
     },
     "Termine und Anwesenheit für dein Team." : {
       "localizations" : {
@@ -257,13 +422,34 @@
       }
     },
     "Trainer" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coach"
+          }
+        }
+      }
     },
     "Vorname" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First name"
+          }
+        }
+      }
     },
     "z. B. U20 Männer" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e. g. U20 Men"
+          }
+        }
+      }
     }
   },
   "version" : "1.3"
