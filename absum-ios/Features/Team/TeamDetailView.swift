@@ -30,12 +30,23 @@ private struct TeamDetailContent: View {
 
     var body: some View {
         List {
-            Section("Mitglieder") {
-                if roster.isLoading && roster.memberships.isEmpty {
-                    ProgressView()
-                } else {
-                    ForEach(roster.memberships) { member in
-                        Text(member.displayName)
+            if roster.isLoading && roster.memberships.isEmpty {
+                ProgressView()
+                    .frame(maxWidth: .infinity)
+            } else {
+                if !staff.isEmpty {
+                    Section("Trainer") {
+                        ForEach(staff) { member in
+                            Text(member.displayName)
+                        }
+                    }
+                }
+
+                if !players.isEmpty {
+                    Section("Spieler") {
+                        ForEach(players) { member in
+                            Text(member.displayName)
+                        }
                     }
                 }
             }
@@ -47,5 +58,19 @@ private struct TeamDetailContent: View {
         .onDisappear {
             roster.stop()
         }
+    }
+
+    // MARK: - Lists
+
+    private var staff: [Membership] {
+        roster.memberships
+            .filter { $0.status == .active && $0.roleId == .coach }
+            .sorted { $0.displayName < $1.displayName }
+    }
+
+    private var players: [Membership] {
+        roster.memberships
+            .filter { $0.status == .active && $0.roleId == .player }
+            .sorted { $0.displayName < $1.displayName }
     }
 }

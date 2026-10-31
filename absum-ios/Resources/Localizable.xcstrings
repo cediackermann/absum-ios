@@ -242,6 +242,7 @@
       }
     },
     "Mitglieder" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
