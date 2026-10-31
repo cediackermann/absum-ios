@@ -67,7 +67,9 @@ final class ClubService {
     }
     
     func createClub(name: String, displayName: String, photoURL: String?) async throws {
-        guard let uid else { return }
+        guard let uid else {
+            throw ClubServiceError.notSignedIn
+        }
         
         let db = Firestore.firestore()
         
@@ -149,50 +151,58 @@ final class ClubService {
     
     private func handle(memberships: [Membership], for uid: String) async {
         self.memberships = memberships
-        
+        errorMessage = nil
+
         let teamIds = Set(memberships.compactMap(\.teamId))
         let clubIds = Set(memberships.map(\.clubId))
+
+        teams = teams.filter { teamIds.contains($0.key) }
+        clubs = clubs.filter { clubIds.contains($0.key) }
+
         let missingTeams = teamIds.subtracting(teams.keys)
         let missingClubs = clubIds.subtracting(clubs.keys)
-        
+
         let db = Firestore.firestore()
-        
+
         for id in missingTeams {
-            let teamRef = db.collection("teams").document(id)
-            
-            if let cached = try? await teamRef.getDocument(source: .cache).data(
-                as: Team.self
-            ) {
+            let ref = db.collection("teams").document(id)
+            if let cached = try? await ref.getDocument(source: .cache).data(as: Team.self) {
+                guard self.uid == uid else { return }
                 teams[id] = cached
             }
-            
+        }
+
+        for id in missingClubs {
+            let ref = db.collection("clubs").document(id)
+            if let cached = try? await ref.getDocument(source: .cache).data(as: Club.self) {
+                guard self.uid == uid else { return }
+                clubs[id] = cached
+            }
+        }
+
+        isLoading = false
+
+        for id in missingTeams {
+            let ref = db.collection("teams").document(id)
             do {
-                let fresh = try await teamRef.getDocument(source: .server).data(as: Team.self)
+                let fresh = try await ref.getDocument(source: .server).data(as: Team.self)
                 guard self.uid == uid else { return }
                 teams[id] = fresh
             } catch {
-                report(error)
+                if teams[id] == nil { report(error) }
             }
         }
-        
+
         for id in missingClubs {
-            let clubRef = db.collection("clubs").document(id)
-            if let cached = try? await clubRef.getDocument(source: .cache).data(
-                as: Club.self
-            ) {
-                clubs[id] = cached
-            }
+            let ref = db.collection("clubs").document(id)
             do {
-                let fresh = try await clubRef.getDocument(source: .server).data(as: Club.self)
+                let fresh = try await ref.getDocument(source: .server).data(as: Club.self)
                 guard self.uid == uid else { return }
                 clubs[id] = fresh
             } catch {
-                report(error)
+                if clubs[id] == nil { report(error) }
             }
         }
-        
-        errorMessage = nil
-        self.isLoading = false
     }
 }
 
