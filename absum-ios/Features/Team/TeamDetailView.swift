@@ -11,9 +11,24 @@ struct TeamDetailView: View {
     @Environment(ClubService.self) private var clubService
     
     let teamId: String
-    private var team: Team? { clubService.teams[teamId] }
     
     var body: some View {
-        
+        if let team = clubService.teams[teamId] {
+            TeamDetailContent(team: team)
+                .navigationTitle(team.name)
+                .navigationSubtitle(clubService.clubs[team.clubId]?.name ?? "")
+        } else {
+            ContentUnavailableView("Team nicht gefunden", systemImage: "person.2.slash")
+        }
+    }
+}
+
+private struct TeamDetailContent: View {
+    let team: Team
+    
+    var body: some View {
+        List {
+            
+        }
     }
 }
