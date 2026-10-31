@@ -45,6 +45,9 @@ struct ProfileView: View {
             }
         }
         .navigationTitle("Profil")
+        .navigationDestination(for: TeamRoute.self) {
+            TeamDetailView(teamId: $0.teamId)
+        }
         .confirmationDialog("Konto endgültig löschen?",
                             isPresented: $showDeleteConfirmation,
                             titleVisibility: .visible) {

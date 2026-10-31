@@ -17,12 +17,16 @@ struct TeamsSection: View {
                 ProgressView()
             } else{
                 ForEach(sortedTeams) { team in
-                    IconRow(
-                        title: team.name,
-                        subtitle: "Admin",
-                        systemImage: "building.2",
-                        color: .blue
-                    )
+                    if let teamId = team.id {
+                        NavigationLink(value: TeamRoute(teamId: teamId)) {
+                            IconRow(
+                                title: team.name,
+                                subtitle: "Admin",
+                                systemImage: "building.2",
+                                color: .blue
+                            )
+                        }
+                    }
                 }
                 
                 Button {
