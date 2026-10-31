@@ -24,11 +24,28 @@ struct TeamDetailView: View {
 }
 
 private struct TeamDetailContent: View {
+    @State private var roster = RosterService()
+
     let team: Team
-    
+
     var body: some View {
         List {
-            
+            Section("Mitglieder") {
+                if roster.isLoading && roster.memberships.isEmpty {
+                    ProgressView()
+                } else {
+                    ForEach(roster.memberships) { member in
+                        Text(member.displayName)
+                    }
+                }
+            }
+        }
+        .task {
+            guard let teamId = team.id else { return }
+            roster.start(teamId: teamId, clubId: team.clubId)
+        }
+        .onDisappear {
+            roster.stop()
         }
     }
 }
