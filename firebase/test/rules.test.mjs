@@ -164,6 +164,9 @@ describe('clubs and memberships', () => {
       updatedAt: serverTimestamp(), updatedBy: 'p1',
     }));
   });
+  it('reading a membership that does not exist is allowed', async () => {
+    await assertSucceeds(getDoc(doc(as('newbie'), 'memberships/t_T1_newbie')));
+  });
 });
 
 describe('events', () => {

@@ -219,7 +219,8 @@ service cloud.firestore {
       }
 
       allow read: if signedIn() && (
-        resource.data.uid == me()
+        resource == null
+        || resource.data.uid == me()
         || isActiveTeamMember(resource.data.teamId)
         || isClubAdmin(resource.data.clubId)
       );
