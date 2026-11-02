@@ -12,7 +12,7 @@ struct TeamsSection: View {
     @State private var showTeamCreationSheet = false
 
     var body: some View {
-        Section("Clubs") {
+        Section("Teams") {
             if clubService.isLoading && clubService.teams.isEmpty {
                 ProgressView()
             } else{
