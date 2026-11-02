@@ -12,6 +12,7 @@ import Observation
 enum ClubServiceError: Error {
     case notSignedIn
     case invalidName
+    case invalidDate
 }
 
 @MainActor
@@ -66,6 +67,8 @@ final class ClubService {
         uid = nil
     }
     
+    // MARK: - Clubs
+    
     func createClub(name: String, displayName: String, photoURL: String?) async throws {
         guard let uid else {
             throw ClubServiceError.notSignedIn
@@ -90,6 +93,8 @@ final class ClubService {
         try batch.setData(from: membership, forDocument: membershipRef)
         try await batch.commit()
     }
+    
+    // MARK: - Teams
     
     @discardableResult
     func createTeam(
@@ -138,6 +143,68 @@ final class ClubService {
         }
 
         return teamRef.documentID
+    }
+    
+    // MARK: - Invites
+    
+    @discardableResult
+    func createInvite(
+        teamId: String,
+        clubId: String,
+        requiresApproval: Bool,
+        expiresAt: Date
+    ) async throws -> Invite {
+        guard let uid else { throw ClubServiceError.notSignedIn }
+
+        let maxDate = Date.now.addingTimeInterval(90 * 24 * 60 * 60)
+        guard expiresAt > .now, expiresAt < maxDate else {
+            throw ClubServiceError.invalidDate
+        }
+
+        let code = Invite.generateCode()
+        var invite = Invite(
+            id: nil,
+            teamId: teamId,
+            clubId: clubId,
+            requiresApproval: requiresApproval,
+            revoked: false,
+            expiresAt: expiresAt,
+            createdBy: uid,
+            createdAt: nil
+        )
+
+        
+        let inviteRef = Firestore.firestore().collection("invites").document(code)
+        try await inviteRef.setData(Firestore.Encoder().encode(invite))
+
+        invite.id = code
+        return invite
+    }
+    
+    func currentInvite(teamId: String, clubId: String) async throws -> Invite {
+        let snapshot = try await Firestore.firestore()
+            .collection("invites")
+            .whereField("teamId", isEqualTo: teamId)
+            .whereField("clubId", isEqualTo: clubId)
+            .whereField("revoked", isEqualTo: false)
+            .getDocuments()
+
+        let invites = snapshot.documents.compactMap {
+            try? $0.data(as: Invite.self)
+        }
+
+        if let existing = invites
+            .filter({ $0.isUsable })
+            .max(by: { $0.expiresAt < $1.expiresAt }) {
+            return existing
+        }
+
+        return try await createInvite(
+            teamId: teamId,
+            clubId: clubId,
+            requiresApproval: true,
+            expiresAt: .now.addingTimeInterval(30 * 24 * 60 * 60)
+        )
     }
     
     //MARK: - Private
@@ -214,6 +281,8 @@ extension ClubService {
                 return String(localized: "Du bist nicht angemeldet.")
             case .invalidName:
                 return String(localized: "Der Name muss zwischen 1 und 80 Zeichen lang sein.")
+            case .invalidDate:
+                return String(localized: "Ungültiges Verfallsdatum")
             }
         }
 
