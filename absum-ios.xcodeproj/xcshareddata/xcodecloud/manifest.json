@@ -1,0 +1,9 @@
+{
+  "id" : "132ca59d-e025-4eac-9053-12e1235a96b5",
+  "targets" : [
+    {
+      "id" : "c9cf7aec-0258-4d76-bc3f-9a76f0d84e6e",
+      "name" : "absum-ios"
+    }
+  ]
+}
