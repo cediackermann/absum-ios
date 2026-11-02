@@ -26,6 +26,8 @@ final class ClubService {
     private(set) var errorMessage: String?
     
     private var membershipListener: ListenerRegistration?
+    private var teamListeners: [String: ListenerRegistration] = [:]
+    private var clubListeners: [String: ListenerRegistration] = [:]
     
     func start(uid: String) {
         guard self.uid != uid else { return }
@@ -51,7 +53,7 @@ final class ClubService {
                 } ?? []
 
                 Task { @MainActor in
-                   await self?.handle(memberships:memberships, for:uid)
+                    self?.handle(memberships:memberships, for:uid)
                 }
             }
     }
@@ -59,6 +61,12 @@ final class ClubService {
     func stop() {
         membershipListener?.remove()
         membershipListener = nil
+
+        teamListeners.values.forEach { $0.remove() }
+        teamListeners = [:]
+        clubListeners.values.forEach { $0.remove() }
+        clubListeners = [:]
+
         memberships = []
         teams = [:]
         clubs = [:]
@@ -209,6 +217,51 @@ final class ClubService {
     
     //MARK: - Private
     
+    private func listenToTeam(_ id: String, for uid: String) {
+        let listener = Firestore.firestore()
+            .collection("teams").document(id)
+            .addSnapshotListener { [weak self] snapshot, error in
+                if let error {
+                    Task { @MainActor in
+                        guard let self, self.uid == uid else { return }
+                        if self.teams[id] == nil { self.report(error) }
+                    }
+                    return
+                }
+
+                let team = try? snapshot?.data(as: Team.self)
+
+                Task { @MainActor in
+                    guard let self, self.uid == uid else { return }
+                    self.teams[id] = team
+                }
+            }
+
+        teamListeners[id] = listener
+    }
+    
+    private func listenToClub(_ id: String, for uid: String) {
+        let listener = Firestore.firestore()
+            .collection("clubs").document(id)
+            .addSnapshotListener { [weak self] snapshot, error in
+                if let error {
+                    Task { @MainActor in
+                        guard let self, self.uid == uid else { return }
+                        if self.clubs[id] == nil { self.report(error) }
+                    }
+                    return
+                }
+                let club = try? snapshot?.data(as: Club.self)
+                
+                Task { @MainActor in
+                    guard let self, self.uid == uid else { return }
+                    self.clubs[id] = club
+                }
+            }
+        
+        clubListeners[id] = listener
+    }
+    
     private func report(_ error: Error) {
         #if DEBUG
         print("ClubService:", error)
@@ -216,60 +269,34 @@ final class ClubService {
         errorMessage = String(localized: "Teams konnten nicht geladen werden.")
     }
     
-    private func handle(memberships: [Membership], for uid: String) async {
+    private func handle(memberships: [Membership], for uid: String) {
         self.memberships = memberships
         errorMessage = nil
 
         let teamIds = Set(memberships.compactMap(\.teamId))
         let clubIds = Set(memberships.map(\.clubId))
 
-        teams = teams.filter { teamIds.contains($0.key) }
-        clubs = clubs.filter { clubIds.contains($0.key) }
-
-        let missingTeams = teamIds.subtracting(teams.keys)
-        let missingClubs = clubIds.subtracting(clubs.keys)
-
-        let db = Firestore.firestore()
-
-        for id in missingTeams {
-            let ref = db.collection("teams").document(id)
-            if let cached = try? await ref.getDocument(source: .cache).data(as: Team.self) {
-                guard self.uid == uid else { return }
-                teams[id] = cached
-            }
+        // 1. Stop listening to teams and clubs you no longer belong to.
+        for id in teamListeners.keys where !teamIds.contains(id) {
+            teamListeners[id]?.remove()
+            teamListeners[id] = nil
+            teams[id] = nil
+        }
+        for id in clubListeners.keys where !clubIds.contains(id) {
+            clubListeners[id]?.remove()
+            clubListeners[id] = nil
+            clubs[id] = nil
         }
 
-        for id in missingClubs {
-            let ref = db.collection("clubs").document(id)
-            if let cached = try? await ref.getDocument(source: .cache).data(as: Club.self) {
-                guard self.uid == uid else { return }
-                clubs[id] = cached
-            }
+        // 2. Start listening to new ones. "New" = nobody is listening yet.
+        for id in teamIds.subtracting(teamListeners.keys) {
+            listenToTeam(id, for: uid)
+        }
+        for id in clubIds.subtracting(clubListeners.keys) {
+            listenToClub(id, for: uid)
         }
 
         isLoading = false
-
-        for id in missingTeams {
-            let ref = db.collection("teams").document(id)
-            do {
-                let fresh = try await ref.getDocument(source: .server).data(as: Team.self)
-                guard self.uid == uid else { return }
-                teams[id] = fresh
-            } catch {
-                if teams[id] == nil { report(error) }
-            }
-        }
-
-        for id in missingClubs {
-            let ref = db.collection("clubs").document(id)
-            do {
-                let fresh = try await ref.getDocument(source: .server).data(as: Club.self)
-                guard self.uid == uid else { return }
-                clubs[id] = fresh
-            } catch {
-                if clubs[id] == nil { report(error) }
-            }
-        }
     }
 }
 
