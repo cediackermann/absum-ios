@@ -13,6 +13,11 @@ enum ClubServiceError: Error {
     case notSignedIn
     case invalidName
     case invalidDate
+    case unknownInvite
+    case unusableInvite
+    case alreadyInTeam
+    case inviteRequestAlreadySent
+    case notAllowedToJoin
 }
 
 @MainActor
@@ -215,7 +220,74 @@ final class ClubService {
         )
     }
     
+    @discardableResult
+    func join(code: String, displayName: String, photoURL: String?) async throws -> MembershipStatus {
+        guard let uid else { throw ClubServiceError.notSignedIn }
+
+        let code = code.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        guard let invite = try await getInvite(code: code) else { throw ClubServiceError.unknownInvite }
+        guard invite.isUsable else { throw ClubServiceError.unusableInvite }
+
+        let status: MembershipStatus = invite.requiresApproval ? .pending : .active
+
+        let ref = Firestore.firestore().collection("memberships")
+            .document(Membership.teamDocumentID(teamId: invite.teamId, uid: uid))
+
+        if let membership = try await getMembership(teamId: invite.teamId) {
+            switch membership.status {
+            case .active:
+                throw ClubServiceError.alreadyInTeam
+            case .pending:
+                throw ClubServiceError.inviteRequestAlreadySent
+            case .removed:
+                throw ClubServiceError.notAllowedToJoin
+            case .left:
+                try await ref.updateData([
+                    "status": status.rawValue,
+                    "inviteCode": code,
+                    "leftAt": FieldValue.delete(),
+                    "updatedAt": FieldValue.serverTimestamp(),
+                    "updatedBy": uid,
+                ])
+            }
+        } else {
+            let membership = Membership.player(
+                uid: uid,
+                clubId: invite.clubId,
+                teamId: invite.teamId,
+                inviteCode: code,
+                status: status,
+                displayName: displayName,
+                photoURL: photoURL
+            )
+            try await ref.setData(Firestore.Encoder().encode(membership))
+        }
+
+        return status
+    }
+    
     //MARK: - Private
+    
+    private func getMembership(teamId: String) async throws -> Membership? {
+        guard let uid else { throw ClubServiceError.notSignedIn }
+        let db = Firestore.firestore()
+        
+        return try await db.collection("memberships")
+            .document(
+                Membership.teamDocumentID(teamId: teamId, uid: uid)
+            ).getDocument().data(as: Membership.self)
+    }
+    
+    private func getInvite(code: String) async throws -> Invite? {
+        let normalizedCode = String(code.prefix(8)).uppercased()
+        
+        return try await Firestore.firestore()
+            .collection("invites")
+            .document(normalizedCode)
+            .getDocument()
+            .data(as: Invite.self)
+    }
     
     private func listenToTeam(_ id: String, for uid: String) {
         let listener = Firestore.firestore()
@@ -310,6 +382,16 @@ extension ClubService {
                 return String(localized: "Der Name muss zwischen 1 und 80 Zeichen lang sein.")
             case .invalidDate:
                 return String(localized: "Ungültiges Verfallsdatum")
+            case .unknownInvite:
+                return String(localized: "Unbekannte Einladung")
+            case .unusableInvite:
+                return String(localized: "Einladung unbrauchbar")
+            case .alreadyInTeam:
+                return String(localized: "Bereits teil des Teams")
+            case .inviteRequestAlreadySent:
+                return String(localized: "Anfrage bereits geschickt")
+            case .notAllowedToJoin:
+                return String(localized: "Keine berechtigung um Beizutreten")
             }
         }
 

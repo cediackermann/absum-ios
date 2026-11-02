@@ -85,4 +85,30 @@ extension Membership {
             updatedBy: uid
         )
     }
+    
+    static func player(uid: String,
+                       clubId: String,
+                       teamId: String,
+                       inviteCode: String,
+                       status: MembershipStatus,
+                       displayName: String,
+                       photoURL: String?) -> Membership {
+        Membership(
+            id: nil,
+            uid: uid,
+            scope: .team,
+            clubId: clubId,
+            teamId: teamId,
+            roleId: .player,
+            status: .active,
+            displayName: displayName,
+            photoURL: photoURL,
+            accountDeleted: nil,
+            inviteCode: nil,
+            joinedAt: nil,
+            leftAt: nil,
+            updatedAt: nil,
+            updatedBy: uid
+        )
+    }
 }
