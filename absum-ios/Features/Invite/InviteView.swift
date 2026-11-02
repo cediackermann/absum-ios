@@ -20,6 +20,7 @@ struct InviteView: View {
         VStack {
             if let invite {
                     Text(invite.code)
+                    QRCodeView(text: invite.code)
                 } else if let errorMessage {
                     Text(errorMessage)
                         .foregroundStyle(.red)

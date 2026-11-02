@@ -41,6 +41,9 @@
         }
       }
     },
+    "Anfrage bereits geschickt" : {
+
+    },
     "Anmelden" : {
       "localizations" : {
         "en" : {
@@ -60,6 +63,9 @@
           }
         }
       }
+    },
+    "Bereits teil des Teams" : {
+
     },
     "Bestätigen" : {
       "localizations" : {
@@ -171,6 +177,9 @@
         }
       }
     },
+    "Einladung unbrauchbar" : {
+
+    },
     "Erstelle ein Konto, um deinem Team beizutreten." : {
       "localizations" : {
         "en" : {
@@ -200,6 +209,9 @@
           }
         }
       }
+    },
+    "Keine berechtigung um Beizutreten" : {
+
     },
     "Keine Verbindung. Bitte versuche es später nochmals." : {
       "localizations" : {
@@ -437,6 +449,9 @@
           }
         }
       }
+    },
+    "Unbekannte Einladung" : {
+
     },
     "Ungültiges Verfallsdatum" : {
 
