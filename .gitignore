@@ -128,6 +128,9 @@ playground.xcworkspace
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+*.xcodeproj/project.xcworkspace/*
+!*.xcodeproj/project.xcworkspace/xcshareddata/
 !*.xcworkspace/contents.xcworkspacedata
 *.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 /*.gcno
