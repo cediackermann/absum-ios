@@ -10,6 +10,8 @@ import SwiftUI
 struct TeamDetailView: View {
     @Environment(ClubService.self) private var clubService
     
+    @State private  var showInviteSheet = false
+    
     let teamId: String
     
     var body: some View {
@@ -17,6 +19,19 @@ struct TeamDetailView: View {
             TeamDetailContent(team: team)
                 .navigationTitle(team.name)
                 .navigationSubtitle(clubService.clubs[team.clubId]?.name ?? "")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showInviteSheet = true
+                        } label: {
+                            Image(systemName: "person.badge.plus")
+                        }
+                        .accessibilityLabel("Teammitglied hinzufügen")
+                    }
+                }
+                .sheet(isPresented: $showInviteSheet) {
+                    InviteView(teamId: teamId, clubId: team.clubId)
+                }
         } else {
             ContentUnavailableView("Team nicht gefunden", systemImage: "person.2.slash")
         }

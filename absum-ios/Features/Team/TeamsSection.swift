@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TeamsSection: View {
     @Environment(ClubService.self) private var clubService
-    @State private var showTeamreationSheet = false
+    @State private var showTeamCreationSheet = false
 
     var body: some View {
         Section("Clubs") {
@@ -30,11 +30,11 @@ struct TeamsSection: View {
                 }
                 
                 Button {
-                    showTeamreationSheet = true
+                    showTeamCreationSheet = true
                 } label: {
                     Label("Team erstellen", systemImage: "plus")
                 }
-                .sheet(isPresented: $showTeamreationSheet) {
+                .sheet(isPresented: $showTeamCreationSheet) {
                     CreateTeamView()
                 }
             }

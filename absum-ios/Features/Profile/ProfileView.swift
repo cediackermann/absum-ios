@@ -12,7 +12,6 @@ struct ProfileView: View {
     @Environment(ClubService.self) private var clubService
     
     @State private var showDeleteConfirmation = false
-    @State private var showClubCreationSheet = false
 
     var body: some View {
         Form {
