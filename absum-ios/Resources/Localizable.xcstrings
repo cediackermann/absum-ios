@@ -41,7 +41,7 @@
         }
       }
     },
-    "Anfrage bereits geschickt" : {
+    "Anfrage gesendet" : {
 
     },
     "Anmelden" : {
@@ -63,9 +63,6 @@
           }
         }
       }
-    },
-    "Bereits teil des Teams" : {
-
     },
     "Bestätigen" : {
       "localizations" : {
@@ -127,6 +124,12 @@
         }
       }
     },
+    "Code" : {
+
+    },
+    "Das Ablaufdatum ist ungültig." : {
+
+    },
     "Dazu hast du keine Berechtigung." : {
       "localizations" : {
         "en" : {
@@ -147,6 +150,15 @@
         }
       }
     },
+    "Dein Trainer muss deine Anfrage noch bestätigen." : {
+
+    },
+    "Deine Anfrage wurde bereits gesendet." : {
+
+    },
+    "Den Code bekommst du von deinem Trainer." : {
+
+    },
     "Der Name muss zwischen 1 und 80 Zeichen lang sein." : {
       "localizations" : {
         "en" : {
@@ -156,6 +168,18 @@
           }
         }
       }
+    },
+    "Diese Einladung ist abgelaufen oder wurde zurückgezogen." : {
+
+    },
+    "Diesen Code gibt es nicht. Prüfe die Eingabe." : {
+
+    },
+    "Du bist bereits Mitglied dieses Teams." : {
+
+    },
+    "Du bist jetzt Mitglied des Teams." : {
+
     },
     "Du bist nicht angemeldet." : {
       "localizations" : {
@@ -167,6 +191,9 @@
         }
       }
     },
+    "Du kannst diesem Team nicht mehr selbst beitreten." : {
+
+    },
     "E-Mail" : {
       "localizations" : {
         "en" : {
@@ -176,9 +203,6 @@
           }
         }
       }
-    },
-    "Einladung unbrauchbar" : {
-
     },
     "Erstelle ein Konto, um deinem Team beizutreten." : {
       "localizations" : {
@@ -209,9 +233,6 @@
           }
         }
       }
-    },
-    "Keine berechtigung um Beizutreten" : {
-
     },
     "Keine Verbindung. Bitte versuche es später nochmals." : {
       "localizations" : {
@@ -314,6 +335,9 @@
         }
       }
     },
+    "OK" : {
+
+    },
     "Optional" : {
       "localizations" : {
         "en" : {
@@ -394,6 +418,9 @@
         }
       }
     },
+    "Team beitreten" : {
+
+    },
     "Team erstellen" : {
       "localizations" : {
         "en" : {
@@ -450,12 +477,6 @@
         }
       }
     },
-    "Unbekannte Einladung" : {
-
-    },
-    "Ungültiges Verfallsdatum" : {
-
-    },
     "Vorname" : {
       "localizations" : {
         "en" : {
@@ -465,6 +486,12 @@
           }
         }
       }
+    },
+    "Willkommen im Team" : {
+
+    },
+    "z. B. K7QM4XRT" : {
+
     },
     "z. B. U20 Männer" : {
       "localizations" : {

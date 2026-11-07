@@ -58,7 +58,7 @@ final class ClubService {
                 } ?? []
 
                 Task { @MainActor in
-                    self?.handle(memberships:memberships, for:uid)
+                    self?.handle(memberships: memberships, for: uid)
                 }
             }
     }
@@ -83,10 +83,11 @@ final class ClubService {
     // MARK: - Clubs
     
     func createClub(name: String, displayName: String, photoURL: String?) async throws {
-        guard let uid else {
-            throw ClubServiceError.notSignedIn
-        }
-        
+        guard let uid else { throw ClubServiceError.notSignedIn }
+
+        let name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty, name.count <= 80 else { throw ClubServiceError.invalidName }
+
         let db = Firestore.firestore()
         
         let clubRef = db.collection("clubs").document()
@@ -186,7 +187,6 @@ final class ClubService {
             createdAt: nil
         )
 
-        
         let inviteRef = Firestore.firestore().collection("invites").document(code)
         try await inviteRef.setData(Firestore.Encoder().encode(invite))
 
@@ -271,22 +271,24 @@ final class ClubService {
     
     private func getMembership(teamId: String) async throws -> Membership? {
         guard let uid else { throw ClubServiceError.notSignedIn }
-        let db = Firestore.firestore()
-        
-        return try await db.collection("memberships")
-            .document(
-                Membership.teamDocumentID(teamId: teamId, uid: uid)
-            ).getDocument().data(as: Membership.self)
-    }
-    
-    private func getInvite(code: String) async throws -> Invite? {
-        let normalizedCode = String(code.prefix(8)).uppercased()
-        
-        return try await Firestore.firestore()
-            .collection("invites")
-            .document(normalizedCode)
+
+        let snapshot = try await Firestore.firestore()
+            .collection("memberships")
+            .document(Membership.teamDocumentID(teamId: teamId, uid: uid))
             .getDocument()
-            .data(as: Invite.self)
+
+        guard snapshot.exists else { return nil }
+        return try snapshot.data(as: Membership.self)
+    }
+
+    private func getInvite(code: String) async throws -> Invite? {
+        let snapshot = try await Firestore.firestore()
+            .collection("invites")
+            .document(code)
+            .getDocument()
+
+        guard snapshot.exists else { return nil }
+        return try snapshot.data(as: Invite.self)
     }
     
     private func listenToTeam(_ id: String, for uid: String) {
@@ -381,17 +383,17 @@ extension ClubService {
             case .invalidName:
                 return String(localized: "Der Name muss zwischen 1 und 80 Zeichen lang sein.")
             case .invalidDate:
-                return String(localized: "Ungültiges Verfallsdatum")
+                return String(localized: "Das Ablaufdatum ist ungültig.")
             case .unknownInvite:
-                return String(localized: "Unbekannte Einladung")
+                return String(localized: "Diesen Code gibt es nicht. Prüfe die Eingabe.")
             case .unusableInvite:
-                return String(localized: "Einladung unbrauchbar")
+                return String(localized: "Diese Einladung ist abgelaufen oder wurde zurückgezogen.")
             case .alreadyInTeam:
-                return String(localized: "Bereits teil des Teams")
+                return String(localized: "Du bist bereits Mitglied dieses Teams.")
             case .inviteRequestAlreadySent:
-                return String(localized: "Anfrage bereits geschickt")
+                return String(localized: "Deine Anfrage wurde bereits gesendet.")
             case .notAllowedToJoin:
-                return String(localized: "Keine berechtigung um Beizutreten")
+                return String(localized: "Du kannst diesem Team nicht mehr selbst beitreten.")
             }
         }
 

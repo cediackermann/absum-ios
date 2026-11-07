@@ -45,25 +45,25 @@ extension Membership {
     }
     
     static func clubAdmin(uid: String, clubId: String,
-                            displayName: String, photoURL: String?) -> Membership {
-          Membership(
-              id: nil,
-              uid: uid,
-              scope: .club,
-              clubId: clubId,
-              teamId: nil,
-              roleId: .admin,
-              status: .active,
-              displayName: displayName,
-              photoURL: photoURL,
-              accountDeleted: nil,
-              inviteCode: nil,
-              joinedAt: nil,
-              leftAt: nil,
-              updatedAt: nil,
-              updatedBy: uid
-          )
-      }
+                          displayName: String, photoURL: String?) -> Membership {
+        Membership(
+            id: nil,
+            uid: uid,
+            scope: .club,
+            clubId: clubId,
+            teamId: nil,
+            roleId: .admin,
+            status: .active,
+            displayName: displayName,
+            photoURL: photoURL,
+            accountDeleted: nil,
+            inviteCode: nil,
+            joinedAt: nil,
+            leftAt: nil,
+            updatedAt: nil,
+            updatedBy: uid
+        )
+    }
     
     static func coach(uid: String, clubId: String, teamId: String,
                       displayName: String, photoURL: String?) -> Membership {
@@ -86,13 +86,8 @@ extension Membership {
         )
     }
     
-    static func player(uid: String,
-                       clubId: String,
-                       teamId: String,
-                       inviteCode: String,
-                       status: MembershipStatus,
-                       displayName: String,
-                       photoURL: String?) -> Membership {
+    static func player(uid: String, clubId: String, teamId: String, inviteCode: String,
+                       status: MembershipStatus, displayName: String, photoURL: String?) -> Membership {
         Membership(
             id: nil,
             uid: uid,
@@ -100,11 +95,11 @@ extension Membership {
             clubId: clubId,
             teamId: teamId,
             roleId: .player,
-            status: .active,
+            status: status,
             displayName: displayName,
             photoURL: photoURL,
             accountDeleted: nil,
-            inviteCode: nil,
+            inviteCode: inviteCode,
             joinedAt: nil,
             leftAt: nil,
             updatedAt: nil,
