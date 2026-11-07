@@ -267,7 +267,49 @@ final class ClubService {
         return status
     }
     
+    func setStatus(_ status: MembershipStatus, for membershipId: String) async throws {
+        guard let uid else { throw ClubServiceError.notSignedIn }
+
+        var fields: [String: Any] = [
+            "status": status.rawValue,
+            "updatedAt": FieldValue.serverTimestamp(),
+            "updatedBy": uid,
+        ]
+        if status == .removed {
+            fields["leftAt"] = FieldValue.serverTimestamp()
+        }
+
+        try await Firestore.firestore()
+            .collection("memberships")
+            .document(membershipId)
+            .updateData(fields)
+    }
+    
+    func canManageMembers(of team: Team) -> Bool {
+        memberships.contains { membership in
+            (membership.scope == .team
+                && membership.teamId == team.id
+                && membership.roleId == .coach)
+            || isAdmin(of: team.clubId, membership)
+        }
+    }
+    
+    func canInvite(to team: Team) -> Bool {
+        memberships.contains { membership in
+            (membership.scope == .team
+                && membership.teamId == team.id
+             && membership.roleId == .coach)
+            || isAdmin(of: team.clubId, membership)
+        }
+    }
+    
     //MARK: - Private
+    
+    private func isAdmin(of clubId: String, _ membership: Membership) -> Bool {
+        membership.scope == .club
+            && membership.clubId == clubId
+            && membership.roleId == .admin
+    }
     
     private func getMembership(teamId: String) async throws -> Membership? {
         guard let uid else { throw ClubServiceError.notSignedIn }

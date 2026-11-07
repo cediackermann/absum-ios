@@ -20,13 +20,15 @@ struct TeamDetailView: View {
                 .navigationTitle(team.name)
                 .navigationSubtitle(clubService.clubs[team.clubId]?.name ?? "")
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button {
-                            showInviteSheet = true
-                        } label: {
-                            Image(systemName: "person.badge.plus")
+                    if clubService.canInvite(to: team) {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                showInviteSheet = true
+                            } label: {
+                                Image(systemName: "person.badge.plus")
+                            }
+                            .accessibilityLabel("Teammitglied hinzufügen")
                         }
-                        .accessibilityLabel("Teammitglied hinzufügen")
                     }
                 }
                 .sheet(isPresented: $showInviteSheet) {
@@ -39,7 +41,11 @@ struct TeamDetailView: View {
 }
 
 private struct TeamDetailContent: View {
+    @Environment(ClubService.self) private var clubService
+    
     @State private var roster = RosterService()
+    @State private var errorMessage: String?
+    @State private var busyIds: Set<String> = []
 
     let team: Team
 
@@ -49,6 +55,43 @@ private struct TeamDetailContent: View {
                 ProgressView()
                     .frame(maxWidth: .infinity)
             } else {
+                if !pendingMembers.isEmpty && clubService
+                    .canManageMembers(of: team) {
+                    Section("Anfragen") {
+                        ForEach(pendingMembers) { member in
+                            HStack {
+                                Text(member.displayName)
+                                
+                                Spacer()
+                                
+                                HStack(spacing: 12) {
+                                    Button {
+                                        Task {
+                                            await setStatus(.left, for: member)
+                                        }
+                                    } label: {
+                                        Label("Ablehnen", systemImage: "xmark")
+                                    }
+                                    .labelStyle(.iconOnly)
+                                    .buttonStyle(.glass)
+
+                                    Button {
+                                        Task { await setStatus(.active, for: member) }
+                                    } label: {
+                                        Label("Annehmen", systemImage: "checkmark")
+                                    }
+                                    .labelStyle(.iconOnly)
+                                    .buttonStyle(.glassProminent)
+                                }
+                                .labelStyle(.iconOnly)
+                                .buttonBorderShape(.circle)
+                                .controlSize(.large)
+                                .disabled(busyIds.contains(member.id ?? ""))
+                            }
+                        }
+                    }
+                }
+                
                 if !staff.isEmpty {
                     Section("Trainer") {
                         ForEach(staff) { member in
@@ -76,6 +119,12 @@ private struct TeamDetailContent: View {
     }
 
     // MARK: - Lists
+    
+    private var pendingMembers: [Membership] {
+        roster.memberships
+            .filter { $0.status == .pending }
+            .sorted { $0.displayName < $1.displayName }
+    }
 
     private var staff: [Membership] {
         roster.memberships
@@ -87,5 +136,20 @@ private struct TeamDetailContent: View {
         roster.memberships
             .filter { $0.status == .active && $0.roleId == .player }
             .sorted { $0.displayName < $1.displayName }
+    }
+    
+    // MARK: - Private
+    
+    private func setStatus(_ status: MembershipStatus, for member: Membership) async {
+        guard let id = member.id else { return }
+        busyIds.insert(id)
+        errorMessage = nil
+        defer { busyIds.remove(id) }
+
+        do {
+            try await clubService.setStatus(status, for: id)
+        } catch {
+            errorMessage = ClubService.message(for: error)
+        }
     }
 }

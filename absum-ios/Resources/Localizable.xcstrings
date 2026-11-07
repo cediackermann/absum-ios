@@ -11,6 +11,9 @@
         }
       }
     },
+    "Ablehnen" : {
+
+    },
     "Abmelden" : {
       "localizations" : {
         "en" : {
@@ -44,6 +47,9 @@
     "Anfrage gesendet" : {
 
     },
+    "Anfragen" : {
+
+    },
     "Anmelden" : {
       "localizations" : {
         "en" : {
@@ -53,6 +59,9 @@
           }
         }
       }
+    },
+    "Annehmen" : {
+
     },
     "Bereits ein Konto?" : {
       "localizations" : {
