@@ -17,6 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EAE9C945307D66D900766938"
                BuildableName = "absum-ios.app"
+               BlueprintName = "absum-ios"
                ReferencedContainer = "container:absum-ios.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -68,6 +69,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EAE9C945307D66D900766938"
             BuildableName = "absum-ios.app"
+            BlueprintName = "absum-ios"
             ReferencedContainer = "container:absum-ios.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -84,6 +86,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EAE9C945307D66D900766938"
             BuildableName = "absum-ios.app"
+            BlueprintName = "absum-ios"
             ReferencedContainer = "container:absum-ios.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -94,5 +97,23 @@
    <ArchiveAction
       buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "   cd &quot;$PROJECT_DIR&quot;&#10;   BUILD=$(git rev-list --count HEAD)&#10;   xcrun agvtool new-version -all &quot;$BUILD&quot;&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "EAE9C945307D66D900766938"
+                     BuildableName = "absum-ios.app"
+                     BlueprintName = "absum-ios"
+                     ReferencedContainer = "container:absum-ios.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
    </ArchiveAction>
 </Scheme>
