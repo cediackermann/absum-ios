@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "de",
   "strings" : {
+    "%lld Min. vorher" : {
+
+    },
     "Abbrechen" : {
       "localizations" : {
         "en" : {
@@ -34,6 +37,9 @@
         }
       }
     },
+    "Addresse" : {
+
+    },
     "Admin" : {
       "localizations" : {
         "en" : {
@@ -43,6 +49,9 @@
           }
         }
       }
+    },
+    "Anderes" : {
+
     },
     "Anfrage gesendet" : {
 
@@ -61,6 +70,12 @@
       }
     },
     "Annehmen" : {
+
+    },
+    "Antworten bis" : {
+
+    },
+    "Beginn" : {
 
     },
     "Bereits ein Konto?" : {
@@ -213,6 +228,9 @@
         }
       }
     },
+    "Ende" : {
+
+    },
     "Erstelle ein Konto, um deinem Team beizutreten." : {
       "localizations" : {
         "en" : {
@@ -233,6 +251,9 @@
         }
       }
     },
+    "Events konnten nicht geladen werden." : {
+
+    },
     "Ich bin Trainer dieses Teams" : {
       "localizations" : {
         "en" : {
@@ -242,6 +263,9 @@
           }
         }
       }
+    },
+    "Keine" : {
+
     },
     "Keine Verbindung. Bitte versuche es später nochmals." : {
       "localizations" : {
@@ -324,6 +348,9 @@
         }
       }
     },
+    "Neuer Termin" : {
+
+    },
     "Neues Team" : {
       "localizations" : {
         "en" : {
@@ -343,6 +370,9 @@
           }
         }
       }
+    },
+    "Notizen" : {
+
     },
     "OK" : {
 
@@ -407,6 +437,9 @@
         }
       }
     },
+    "Spiel" : {
+
+    },
     "Spieler" : {
       "localizations" : {
         "en" : {
@@ -426,6 +459,12 @@
           }
         }
       }
+    },
+    "Standort" : {
+
+    },
+    "Start" : {
+
     },
     "Team beitreten" : {
 
@@ -476,6 +515,9 @@
         }
       }
     },
+    "Titel" : {
+
+    },
     "Trainer" : {
       "localizations" : {
         "en" : {
@@ -485,6 +527,15 @@
           }
         }
       }
+    },
+    "Training" : {
+
+    },
+    "Treffpunkt" : {
+
+    },
+    "Turnier" : {
+
     },
     "Vorname" : {
       "localizations" : {
@@ -511,6 +562,9 @@
           }
         }
       }
+    },
+    "Zeit" : {
+
     }
   },
   "version" : "1.3"
