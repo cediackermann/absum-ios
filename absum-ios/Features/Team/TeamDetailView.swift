@@ -61,11 +61,12 @@ struct TeamDetailView: View {
 
 private struct TeamDetailContent: View {
     @Environment(ClubService.self) private var clubService
+    @Environment(EventService.self) private var eventService
     
     @State private var roster = RosterService()
     @State private var errorMessage: String?
     @State private var busyIds: Set<String> = []
-
+    
     let team: Team
 
     var body: some View {
@@ -107,6 +108,16 @@ private struct TeamDetailContent: View {
                                 .controlSize(.large)
                                 .disabled(busyIds.contains(member.id ?? ""))
                             }
+                        }
+                    }
+                }
+                
+                let upcoming = eventService.events(for: team.id ?? "").prefix(5)
+
+                if !upcoming.isEmpty {
+                    Section("Nächste Termine") {
+                        ForEach(upcoming) { event in
+                            EventRow(event: event)
                         }
                     }
                 }

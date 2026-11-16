@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MainView: View {
     @Environment(AuthenticationViewModel.self) private var viewModel
+    @Environment(ClubService.self) private var clubService
+    @Environment(EventService.self) private var eventService
 
     var body: some View {
         TabView {
@@ -17,6 +19,9 @@ struct MainView: View {
                     ProfileView()
                 }
             }
+        }
+        .task(id: Set(clubService.teams.keys)) {
+            eventService.sync(teamIds: Set(clubService.teams.keys))
         }
     }
 }
