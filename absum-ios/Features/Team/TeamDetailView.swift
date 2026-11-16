@@ -10,7 +10,8 @@ import SwiftUI
 struct TeamDetailView: View {
     @Environment(ClubService.self) private var clubService
     
-    @State private  var showInviteSheet = false
+    @State private var showInviteSheet = false
+    @State private var showCreateEventSheet = false
     
     let teamId: String
     
@@ -20,6 +21,17 @@ struct TeamDetailView: View {
                 .navigationTitle(team.name)
                 .navigationSubtitle(clubService.clubs[team.clubId]?.name ?? "")
                 .toolbar {
+                    if clubService.canManageCreateEvents(for: team) {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button {
+                                showCreateEventSheet = true
+                            } label: {
+                                Image(systemName: "plus")
+                            }
+                            .accessibilityLabel("Event erstellen")
+                        }
+                    }
+                    
                     if clubService.canInvite(to: team) {
                         ToolbarItem(placement: .topBarTrailing) {
                             Button {
@@ -30,6 +42,13 @@ struct TeamDetailView: View {
                             .accessibilityLabel("Teammitglied hinzufügen")
                         }
                     }
+                }
+                .sheet(isPresented: $showCreateEventSheet) {
+                    EventCreationView(
+                        teamId: team.id ?? "",
+                        clubId: team.clubId,
+                        settings: team.settings
+                    )
                 }
                 .sheet(isPresented: $showInviteSheet) {
                     InviteView(teamId: teamId, clubId: team.clubId)

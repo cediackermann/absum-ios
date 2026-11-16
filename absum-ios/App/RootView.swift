@@ -10,6 +10,7 @@ import SwiftUI
 struct RootView: View {
     @Environment(AuthService.self) private var auth
     @Environment(ClubService.self) private var clubService
+    @Environment(EventService.self) private var eventService
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var pendingJoin: JoinLink?
@@ -29,8 +30,10 @@ struct RootView: View {
         .task(id: auth.uid) {
             if let uid = auth.uid {
                 clubService.start(uid: uid)
+                eventService.start(uid: uid)
             } else {
                 clubService.stop()
+                eventService.stop()
             }
         }
         .onOpenURL { url in

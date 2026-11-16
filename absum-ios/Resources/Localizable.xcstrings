@@ -254,7 +254,7 @@
         }
       }
     },
-    "Events konnten nicht geladen werden." : {
+    "Event erstellen" : {
 
     },
     "Ich bin Trainer dieses Teams" : {
@@ -507,6 +507,9 @@
           }
         }
       }
+    },
+    "Termine konnten nicht geladen werden." : {
+
     },
     "Termine und Anwesenheit für dein Team." : {
       "localizations" : {

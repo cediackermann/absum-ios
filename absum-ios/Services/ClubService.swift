@@ -294,6 +294,15 @@ final class ClubService {
         }
     }
     
+    func canManageCreateEvents(for team: Team) -> Bool {
+        memberships.contains { membership in
+            (membership.scope == .team
+                && membership.teamId == team.id
+             && membership.roleId == .coach)
+            || isAdmin(of: team.clubId, membership)
+        }
+    }
+    
     func canInvite(to team: Team) -> Bool {
         memberships.contains { membership in
             (membership.scope == .team

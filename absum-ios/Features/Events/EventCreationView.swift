@@ -9,10 +9,17 @@ import SwiftUI
 
 struct EventCreationView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(EventCreationViewModel.self) private var viewModel
     @Environment(EventService.self) private var eventService
     
+    @State private var viewModel: EventCreationViewModel
+    
     @FocusState private var focusedField: Field?
+    
+    init(teamId: String, clubId: String, settings: TeamSettings) {
+        _viewModel = State(initialValue: EventCreationViewModel(
+            teamId: teamId, clubId: clubId, settings: settings
+        ))
+    }
     
     var body: some View {
         @Bindable var viewModel = viewModel
@@ -97,13 +104,7 @@ struct EventCreationView: View {
 }
 
 #Preview {
-    EventCreationView()
-        .environment(
-            EventCreationViewModel(
-                teamId: "T1",
-                clubId: "C1",
-                settings: TeamSettings()
-            )
-        )
+    EventCreationView(teamId: "T1", clubId: "C1", settings: TeamSettings())
+            .environment(EventService())
 }
 
