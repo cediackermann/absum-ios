@@ -10,6 +10,7 @@ import SwiftUI
 struct EventCreationView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(EventCreationViewModel.self) private var viewModel
+    @Environment(EventService.self) private var eventService
     
     @FocusState private var focusedField: Field?
     
@@ -27,7 +28,7 @@ struct EventCreationView: View {
                     DatePicker("Beginn", selection: $viewModel.startAt)
                     DatePicker("Ende", selection: $viewModel.endAt)
                     Picker("Treffpunkt", selection: $viewModel.meetOffset) {
-                        Text("Keine").tag(Int?.none)
+                        Text("Kein").tag(Int?.none)
                         ForEach([15, 30, 45, 60, 90, 120], id: \.self) { minutes in
                             Text("\(minutes) Min. vorher").tag(Int?.some(minutes))
                         }
@@ -79,8 +80,12 @@ struct EventCreationView: View {
     // MARK: - Private
     
     private func submit() {
-            focusedField = nil
-            
+        focusedField = nil
+            Task {
+                if await viewModel.submit(using: eventService) {
+                    dismiss()
+                }
+            }
         }
     
     private enum Field {

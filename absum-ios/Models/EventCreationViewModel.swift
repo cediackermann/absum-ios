@@ -99,4 +99,21 @@ final class EventCreationViewModel {
             updatedBy: uid
         )
     }
+    
+    // MARK: - Submit
+
+    func submit(using events: EventService) async -> Bool {
+        guard isValid, !isWorking else { return false }
+        isWorking = true
+        errorMessage = nil
+        defer { isWorking = false }
+
+        do {
+            try await events.createEvent { uid in makeEvent(createdBy: uid) }
+            return true
+        } catch {
+            errorMessage = EventService.message(for: error)
+            return false
+        }
+    }
 }

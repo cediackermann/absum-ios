@@ -18,12 +18,14 @@ struct absum_iosApp: App {
     @State private var viewModel: AuthenticationViewModel
     @State private var auth: AuthService
     @State private var teams: ClubService
+    @State private var events: EventService
 
     init() {
         FirebaseApp.configure()
         _viewModel = State(initialValue: AuthenticationViewModel())
         _auth = State(initialValue: AuthService())
         _teams = State(initialValue: ClubService())
+        _events = State(initialValue: EventService())
     }
 
     var body: some Scene {
@@ -32,6 +34,7 @@ struct absum_iosApp: App {
                 .environment(viewModel)
                 .environment(auth)
                 .environment(teams)
+                .environment(events)
         }
     }
 }

@@ -215,6 +215,9 @@
         }
       }
     },
+    "Du darfst in diesem Team keine Termine erstellen." : {
+
+    },
     "Du kannst diesem Team nicht mehr selbst beitreten." : {
 
     },
@@ -264,7 +267,7 @@
         }
       }
     },
-    "Keine" : {
+    "Kein" : {
 
     },
     "Keine Verbindung. Bitte versuche es später nochmals." : {
