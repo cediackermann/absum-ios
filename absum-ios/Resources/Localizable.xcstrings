@@ -53,6 +53,9 @@
         }
       }
     },
+    "Alle Termine" : {
+
+    },
     "Anderes" : {
 
     },
@@ -260,6 +263,9 @@
     "Event erstellen" : {
 
     },
+    "Heute" : {
+
+    },
     "Ich bin Trainer dieses Teams" : {
       "localizations" : {
         "en" : {
@@ -323,6 +329,9 @@
           }
         }
       }
+    },
+    "Morgen" : {
+
     },
     "Nachname" : {
       "localizations" : {
@@ -475,6 +484,9 @@
     "Start" : {
 
     },
+    "Team" : {
+
+    },
     "Team beitreten" : {
 
     },
@@ -513,6 +525,9 @@
           }
         }
       }
+    },
+    "Termine" : {
+
     },
     "Termine konnten nicht geladen werden." : {
 

@@ -14,6 +14,10 @@ struct MainView: View {
 
     var body: some View {
         TabView {
+            Tab("Termine", systemImage: "calendar") { NavigationStack {
+                    EventsView()
+                }
+            }
             Tab("Profil", systemImage: "person") {
                 NavigationStack {
                     ProfileView()
